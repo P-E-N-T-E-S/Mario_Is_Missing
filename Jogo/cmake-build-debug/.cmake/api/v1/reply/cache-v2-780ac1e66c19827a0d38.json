@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/PENTES/Mario_Is_Missing/MIM/cmake-build-debug"
+			"value" : "c:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -431,7 +431,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/PENTES/Mario_Is_Missing/MIM/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -503,7 +503,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/PENTES/Mario_Is_Missing/MIM"
+			"value" : "C:/PENTES/Mario_Is_Missing/Jogo"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/MIM"
+			"value" : "C:/Program Files (x86)/Jogo"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -731,7 +731,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "MIM"
+			"value" : "Jogo"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1126,7 +1126,7 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "MIM_BINARY_DIR",
+			"name" : "Jogo_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -1135,10 +1135,10 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/PENTES/Mario_Is_Missing/MIM/cmake-build-debug"
+			"value" : "C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug"
 		},
 		{
-			"name" : "MIM_IS_TOP_LEVEL",
+			"name" : "Jogo_IS_TOP_LEVEL",
 			"properties" : 
 			[
 				{
@@ -1150,7 +1150,7 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "MIM_SOURCE_DIR",
+			"name" : "Jogo_SOURCE_DIR",
 			"properties" : 
 			[
 				{
@@ -1159,7 +1159,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/PENTES/Mario_Is_Missing/MIM"
+			"value" : "C:/PENTES/Mario_Is_Missing/Jogo"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",

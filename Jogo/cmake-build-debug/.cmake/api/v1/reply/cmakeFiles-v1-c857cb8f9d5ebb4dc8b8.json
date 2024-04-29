@@ -449,8 +449,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/PENTES/Mario_Is_Missing/MIM/cmake-build-debug",
-		"source" : "C:/PENTES/Mario_Is_Missing/MIM"
+		"build" : "C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug",
+		"source" : "C:/PENTES/Mario_Is_Missing/Jogo"
 	},
 	"version" : 
 	{

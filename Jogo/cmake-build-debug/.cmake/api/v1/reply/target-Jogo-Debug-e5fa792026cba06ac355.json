@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "MIM.exe"
+			"path" : "Jogo.exe"
 		},
 		{
-			"path" : "MIM.pdb"
+			"path" : "Jogo.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -56,7 +56,7 @@
 			]
 		}
 	],
-	"id" : "MIM::@6890427a1f51a3e7e1df",
+	"id" : "Jogo::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -76,8 +76,8 @@
 		],
 		"language" : "C"
 	},
-	"name" : "MIM",
-	"nameOnDisk" : "MIM.exe",
+	"name" : "Jogo",
+	"nameOnDisk" : "Jogo.exe",
 	"paths" : 
 	{
 		"build" : ".",
