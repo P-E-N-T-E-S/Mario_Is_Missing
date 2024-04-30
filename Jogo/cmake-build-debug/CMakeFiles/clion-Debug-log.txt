@@ -1,10 +1,6 @@
-C:\Users\thoma\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/thoma/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S C:\PENTES\Mario_Is_Missing\Jogo -B C:\PENTES\Mario_Is_Missing\Jogo\cmake-build-debug
--- The C compiler identification is GNU 13.1.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: C:/Users/thoma/AppData/Local/Programs/CLion/bin/mingw/bin/gcc.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Configuring done (2.2s)
--- Generating done (0.0s)
--- Build files have been written to: C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug
+"C:\Program Files\JetBrains\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\Users\Pedro\OneDrive\Documentos\Mario_is_missing\Mario_Is_Missing\Jogo -B C:\Users\Pedro\OneDrive\Documentos\Mario_is_missing\Mario_Is_Missing\Jogo\cmake-build-debug
+CMake Error at CMakeLists.txt:1 (cmake_minimum_required):
+  CMake 3.28 or higher is required.  You are running version 3.27.8
+
+
+-- Configuring incomplete, errors occurred!

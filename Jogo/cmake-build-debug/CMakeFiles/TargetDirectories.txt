@@ -1,3 +1,0 @@
-C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug/CMakeFiles/Jogo.dir
-C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/PENTES/Mario_Is_Missing/Jogo/cmake-build-debug/CMakeFiles/rebuild_cache.dir
