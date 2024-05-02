@@ -56,7 +56,7 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e **não tem fin
 
 ## 👨‍👩‍👧‍👦 Contribuintes
   
-<a href="https://github.com/P-E-N-T-E-S/Archives.Sol/graphs/contributors">
+<a href="https://github.com/P-E-N-T-E-S/Mario_Is_Missing/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=P-E-N-T-E-S/Mario_Is_Missing" />
 </a>
 
