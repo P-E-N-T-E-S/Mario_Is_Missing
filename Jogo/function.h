@@ -1,11 +1,19 @@
-
+#ifndef FUNCTIONS_H_
+#define FUNCTIONS_H_
 
 typedef struct questiontree{
     int id;
-    char perguntas;
+    char *perguntas;
+    char *a;
+    char *b;
+    char *c;
+    char *d;
+    char resposta;
     struct questiontree *left;
     struct questiontree *right;
-    char *alternativas[];
 }Questiontree;
 
-void iniciar(Questiontree** root, int id, char perguntas,  )
+int randomValue();
+
+
+#endif /* FUNCTIONS_H_ */
