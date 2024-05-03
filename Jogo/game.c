@@ -3,7 +3,7 @@
 
 #define WIDTH 510
 #define HEIGHT 480
-#define MAX_INPUT_CHARS 10
+#define MAX_INPUT_CHARS 6
 
 typedef enum { 
     START, 
@@ -17,11 +17,12 @@ typedef enum {
 } ScreenState;
 
 void TextInput(char *inputText, int *charCount);
+void animacaoLuigi();
 
 int main(void)
 {
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
-    SetTargetFPS(60); 
+    SetTargetFPS(15); 
 
     // Load Menu
     Texture2D menu = LoadTexture("src/Telas/menu.png");
@@ -96,18 +97,23 @@ int main(void)
                 TextInput(get_name, &charCount);
                 DrawTextEx(customFont, "Digite seu nome:", (Vector2){60, 90}, 20, 2, WHITE);
                 DrawTextEx(customFont, get_name, (Vector2){60, 140}, 20, 2, WHITE);
-                if (IsKeyPressed(KEY_ENTER)) { 
+                printf("%d", charCount);
+                if (IsKeyPressed(KEY_ENTER) && get_name[0] != '\0'){ 
                     currentScreen = GAME;
-                    UnloadTexture(type_page);
+                    break;
                 }
+                break;
             case GAME:
-
+                ClearBackground(BLACK);
+                animacaoLuigi();
+                
+                break;
             case GUESS:
 
             case GAME_OVER:
 
             case END:
-                DrawTexture(end, 0, 0, WHITE); 
+                //DrawTexture(end, 0, 0, WHITE); 
                 
         }
         EndDrawing();
@@ -142,3 +148,54 @@ void TextInput(char *inputText, int *charCount) {
         }
     }
 }
+
+void animacaoLuigi() {
+    Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/001.png");
+    Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/002.png");
+    Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/001.png");
+    Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/002.png");
+    
+    Vector2 position = { WIDTH / 2 - luigiLeft1.width / 2, HEIGHT / 2 - luigiLeft1.height / 2 };
+    
+    int currentFrame = 0;
+    float speed = 5.0f;
+    
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        
+        if (IsKeyDown(KEY_A)) {
+            position.x -= speed;
+            
+            if (currentFrame == 0)
+                DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+            else if (currentFrame == 1)
+                DrawTexture(luigiLeft2, position.x, position.y, WHITE);
+            
+            currentFrame++;
+            if (currentFrame > 1)
+                currentFrame = 0;
+        } else if (IsKeyDown(KEY_D)) {
+            position.x += speed;
+            
+            if (currentFrame == 0)
+                DrawTexture(luigiRight1, position.x, position.y, WHITE);
+            else if (currentFrame == 1)
+                DrawTexture(luigiRight2, position.x, position.y, WHITE);
+            
+            currentFrame++;
+            if (currentFrame > 1)
+                currentFrame = 0;
+        } else {
+            DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+        }
+        
+        EndDrawing();
+    }
+    
+    UnloadTexture(luigiLeft1);
+    UnloadTexture(luigiLeft2);
+    UnloadTexture(luigiRight1);
+    UnloadTexture(luigiRight2);
+}
+
