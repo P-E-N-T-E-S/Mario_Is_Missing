@@ -1,7 +1,7 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-typedef struct questiontree{
+typedef struct questiontree {
     int id;
     char *perguntas;
     char *a;
@@ -11,9 +11,16 @@ typedef struct questiontree{
     char resposta;
     struct questiontree *left;
     struct questiontree *right;
-}Questiontree;
+} Questiontree;
+
+typedef struct ranking {
+    int pontos;
+    char nome[30];
+} Ranking;
 
 int randomValue();
+int jogadores(FILE *dados);
+void sortranking(Ranking *ranking, int n);
+void addRanking(Ranking *ranking, int qtd, FILE * dados);
 
-
-#endif /* FUNCTIONS_H_ */
+#endif
