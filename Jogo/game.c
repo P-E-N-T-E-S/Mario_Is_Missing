@@ -11,6 +11,8 @@ typedef enum {
     RANKING_PAGE,
     GET_NAME,
     GAME,
+    GUESS,
+    GAME_OVER,
     END
 } ScreenState;
 
@@ -31,14 +33,19 @@ int main(void)
 
     // Load Font
     Font customFont = LoadFont("src/MarioFont.ttf");
-    char inputText[MAX_INPUT_CHARS + 1] = {0};
+    char get_name[MAX_INPUT_CHARS + 1] = {0};
     int charCount = 0;
+
+    // Load type
+    Texture2D type_page = LoadTexture("src/Telas/type_page.png");
+
+    // Load end
+    Texture2D end = LoadTexture("src/Telas/end.png");
 
     ScreenState currentScreen = START;
 
     while (!WindowShouldClose())
     {
-        DisableCursor();
         BeginDrawing();
         switch (currentScreen) {
             case START:
@@ -85,12 +92,22 @@ int main(void)
                 DrawTexture(ranking_page, 0, 0, WHITE);
                 break;
             case GET_NAME:
-                ClearBackground(WHITE);
-                TextInput(inputText, &charCount);
-                DrawTextEx(customFont, inputText, (Vector2){10, 40}, 20, 2, BLACK);
+                DrawTexture(type_page, 0, 0, WHITE); 
+                TextInput(get_name, &charCount);
+                DrawTextEx(customFont, "Digite seu nome:", (Vector2){60, 90}, 20, 2, WHITE);
+                DrawTextEx(customFont, get_name, (Vector2){60, 140}, 20, 2, WHITE);
+                if (IsKeyPressed(KEY_ENTER)) { 
+                    currentScreen = GAME;
+                    UnloadTexture(type_page);
+                }
             case GAME:
 
+            case GUESS:
+
+            case GAME_OVER:
+
             case END:
+                DrawTexture(end, 0, 0, WHITE); 
                 
         }
         EndDrawing();
