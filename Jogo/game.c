@@ -150,10 +150,10 @@ void TextInput(char *inputText, int *charCount) {
 }
 
 void animacaoLuigi() {
-    Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/001.png");
-    Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/002.png");
-    Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/001.png");
-    Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/002.png");
+    Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/left.png");
+    Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/w_left.png");
+    Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/right.png");
+    Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/w_right.png");
     
     Vector2 position = { WIDTH / 2 - luigiLeft1.width / 2, HEIGHT / 2 - luigiLeft1.height / 2 };
     
