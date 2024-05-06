@@ -17,7 +17,7 @@ typedef enum {
 } ScreenState;
 
 void TextInput(char *inputText, int *charCount);
-void animacaoLuigi();
+void animacaoLuigi(Texture2D bg);
 
 int main(void)
 {
@@ -39,6 +39,9 @@ int main(void)
 
     // Load type
     Texture2D type_page = LoadTexture("src/Telas/type_page.png");
+
+    // Load Backgrounds
+    Texture2D arg = LoadTexture("src/Background/BuenosAires/LongBuenosAires2x.png");
 
     // Load end
     Texture2D end = LoadTexture("src/Telas/end.png");
@@ -105,7 +108,8 @@ int main(void)
                 break;
             case GAME:
                 ClearBackground(BLACK);
-                animacaoLuigi();
+               
+                animacaoLuigi(arg);
                 
                 break;
             case GUESS:
@@ -149,21 +153,22 @@ void TextInput(char *inputText, int *charCount) {
     }
 }
 
-void animacaoLuigi() {
-    Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/left.png");
-    Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/w_left.png");
-    Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/right.png");
-    Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/w_right.png");
+void animacaoLuigi(Texture2D bg) {
+    Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/L.png");
+    Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/W_L.png");
+    Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/R.png");
+    Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/W_R.png");
     
-    Vector2 position = { WIDTH / 2 - luigiLeft1.width / 2, HEIGHT / 2 - luigiLeft1.height / 2 };
+    Vector2 position = { WIDTH / 2 - luigiLeft1.width / 2, HEIGHT - luigiLeft1.height - 70};
     
     int currentFrame = 0;
     float speed = 5.0f;
-    
+    int last;
+
     while (!WindowShouldClose()) {
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        
+        ClearBackground(BLACK);
+        DrawTexture(bg, 0, 0, WHITE);
         if (IsKeyDown(KEY_A)) {
             position.x -= speed;
             
@@ -175,6 +180,8 @@ void animacaoLuigi() {
             currentFrame++;
             if (currentFrame > 1)
                 currentFrame = 0;
+
+            last = 1;
         } else if (IsKeyDown(KEY_D)) {
             position.x += speed;
             
@@ -186,8 +193,16 @@ void animacaoLuigi() {
             currentFrame++;
             if (currentFrame > 1)
                 currentFrame = 0;
+            
+            last = 0;
         } else {
-            DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+            if (last == 1) {
+                DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+            }
+            else {
+                DrawTexture(luigiRight1, position.x, position.y, WHITE);
+            }
+            
         }
         
         EndDrawing();
