@@ -9,8 +9,7 @@ typedef struct questiontree {
     char *c;
     char *d;
     char resposta;
-    struct questiontree *left;
-    struct questiontree *right;
+    struct questiontree *next;
 } Questiontree;
 
 typedef struct ranking {
@@ -22,5 +21,7 @@ int randomValue();
 int jogadores(FILE *dados);
 void sortranking(Ranking *ranking, int n);
 void addRanking(Ranking *ranking, int qtd, FILE * dados);
-
+void inserir(Questiontree **head, int id, char *pergunta, char *a, char *b, char *c, char *d, char resposta);
+void lerArquivo(const char *nomeArquivo, Questiontree **head);
+void sortearArquivo();
 #endif
