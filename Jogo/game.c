@@ -18,6 +18,7 @@ typedef enum {
 
 void TextInput(char *inputText, int *charCount);
 void animacaoLuigi(Texture2D bg, Font font);
+void pergunta(Font font);
 
 int main(void)
 {
@@ -155,13 +156,15 @@ void animacaoLuigi(Texture2D bg, Font font) {
     Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/W_L.png");
     Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/R.png");
     Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/W_R.png");
-    
+    Texture2D pgta = LoadTexture("src/Telas/pergunta.png");
+
     Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
     
     int currentFrame = 0;
     float speed = 8.0f;
     int last;
     int part = 1;
+    int pgtaAtiva = 0;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -174,6 +177,7 @@ void animacaoLuigi(Texture2D bg, Font font) {
             if (IsKeyDown(KEY_E)) {
                 
             }
+            
         }
 
         if (IsKeyDown(KEY_A)) {
@@ -228,3 +232,16 @@ void animacaoLuigi(Texture2D bg, Font font) {
     UnloadTexture(luigiRight2);
 }
 
+
+void pergunta(Font font) {
+    Texture2D bg = LoadTexture("src/Telas/pergunta.png");
+
+    while (!WindowShouldClose) {
+        BeginDrawing();
+
+        DrawTexture(bg, 20, 90, WHITE);
+        EndDrawing();
+    }
+
+    UnloadTexture(bg);
+}
