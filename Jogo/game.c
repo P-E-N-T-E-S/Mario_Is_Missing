@@ -2,7 +2,7 @@
 #include "raylib.h"
 
 #define WIDTH 510
-#define HEIGHT 480
+#define HEIGHT 446
 #define MAX_INPUT_CHARS 6
 
 typedef enum { 
@@ -17,7 +17,7 @@ typedef enum {
 } ScreenState;
 
 void TextInput(char *inputText, int *charCount);
-void animacaoLuigi(Texture2D bg);
+void animacaoLuigi(Texture2D bg, Font font);
 
 int main(void)
 {
@@ -107,10 +107,7 @@ int main(void)
                 }
                 break;
             case GAME:
-                ClearBackground(BLACK);
-               
-                animacaoLuigi(arg);
-                
+                animacaoLuigi(arg, customFont);
                 break;
             case GUESS:
 
@@ -153,46 +150,63 @@ void TextInput(char *inputText, int *charCount) {
     }
 }
 
-void animacaoLuigi(Texture2D bg) {
+void animacaoLuigi(Texture2D bg, Font font) {
     Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/L.png");
     Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/W_L.png");
     Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/R.png");
     Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/W_R.png");
     
-    Vector2 position = { WIDTH / 2 - luigiLeft1.width / 2, HEIGHT - luigiLeft1.height - 70};
+    Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
     
     int currentFrame = 0;
-    float speed = 5.0f;
+    float speed = 8.0f;
     int last;
+    int part = 1;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
+
         DrawTexture(bg, 0, 0, WHITE);
+        
+        if (position.x >= 385) {
+            DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, BLACK);
+            if (IsKeyDown(KEY_E)) {
+                
+            }
+        }
+
         if (IsKeyDown(KEY_A)) {
             position.x -= speed;
             
-            if (currentFrame == 0)
+            if (currentFrame == 0) {
                 DrawTexture(luigiLeft1, position.x, position.y, WHITE);
-            else if (currentFrame == 1)
+            }
+            else if (currentFrame == 1) {
                 DrawTexture(luigiLeft2, position.x, position.y, WHITE);
+            }
             
             currentFrame++;
-            if (currentFrame > 1)
+            if (currentFrame > 1) {
                 currentFrame = 0;
+            }
 
             last = 1;
         } else if (IsKeyDown(KEY_D)) {
             position.x += speed;
             
-            if (currentFrame == 0)
+            if (currentFrame == 0) {
                 DrawTexture(luigiRight1, position.x, position.y, WHITE);
-            else if (currentFrame == 1)
+            }
+                
+            else if (currentFrame == 1) {
                 DrawTexture(luigiRight2, position.x, position.y, WHITE);
-            
+            }
+                
             currentFrame++;
-            if (currentFrame > 1)
+            if (currentFrame > 1) {
                 currentFrame = 0;
+            }
             
             last = 0;
         } else {
