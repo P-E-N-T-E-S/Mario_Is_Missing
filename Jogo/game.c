@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include "raylib.h"
+#include "function.c"
 
 #define WIDTH 510
 #define HEIGHT 446
 #define MAX_INPUT_CHARS 6
+#define NUM 6
 
 typedef enum { 
     START, 
@@ -15,6 +17,15 @@ typedef enum {
     GAME_OVER,
     END
 } ScreenState;
+
+typedef enum {
+    MEX,
+    ARG,
+    BRA,
+    FRA,
+    ITA,
+    CHI,
+} Cenarios;
 
 typedef enum {
     A,
@@ -119,7 +130,7 @@ int main(void)
                 animacaoLuigi(arg, customFont, pixelFont);
                 break;
             case GUESS:
-
+                
             case GAME_OVER:
 
             case END:
@@ -166,10 +177,20 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
     Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/R.png");
     Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/W_R.png");
 
+    // Load alternativas
     Texture2D alt_a = LoadTexture("src/Telas/escolha_a.png");
     Texture2D alt_b = LoadTexture("src/Telas/escolha_b.png");
     Texture2D alt_c = LoadTexture("src/Telas/escolha_c.png");
     Texture2D alt_d = LoadTexture("src/Telas/escolha_d.png");
+
+    // Load Cenarios
+    Texture2D texturasCenarios[NUM];
+    texturasCenarios[MEX] = LoadTexture("/src/Backgrounds/mexico.png");
+    texturasCenarios[ARG] = LoadTexture("/src/Backgrounds/argentina.png");
+    texturasCenarios[BRA] = LoadTexture("/src/Backgrounds/brasil.png");
+    texturasCenarios[FRA] = LoadTexture("/src/Backgrounds/franca.png"); 
+    texturasCenarios[ITA] = LoadTexture("/src/Backgrounds/italia.png");
+    texturasCenarios[CHI] = LoadTexture("/src/Backgrounds/china.png");
 
     Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
     
@@ -179,108 +200,129 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
     int part = 1;
     bool pgtaAtiva = false; 
     Alternativas alt = A;
-    
+    sortearArquivo();
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
 
-        DrawTexture(bg, 0, 0, WHITE);
-        
-        if (position.x >= 310) {
+        for (int i = 0; i < NUM; i++) {
+            DrawTexture(texturasCenarios[i], 0, 0, WHITE);
+            
+            if (position.x >= 310) {
+                if (!pgtaAtiva) {
+                    DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, BLACK);
+                }
+                
+                if (IsKeyDown(KEY_E)) {
+                    pgtaAtiva = true;
+                }
+                
+                if (pgtaAtiva) {
+
+                    if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_UP)) {
+                        if (alt < D) {
+                            alt++;
+                        } else {
+                            alt = A;
+                        }
+                    } else if (IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)) {
+                        if (alt > A) {
+                            alt--;
+                        } else {
+                            alt = D;
+                        }
+                    }
+
+                    switch (alt) {
+                        case A:
+                            DrawTexture(alt_a, 50, 20, WHITE);
+                            if (IsKeyDown(KEY_ENTER)) {
+                                //if (alt_a == resposta) {
+                                    //DrawText("Quer tentar advinhar?");
+                                    // vai pro GUESS_NAME;
+                                //}
+                                //else {
+                                    // vai pro GAME OVER;
+                                //}
+                            }
+                            break;
+                        case B:
+                            DrawTexture(alt_b, 50, 20, WHITE);
+                            if (IsKeyDown(KEY_ENTER)) {
+                                
+                            }
+                            break;
+                        case C:
+                            DrawTexture(alt_c, 50, 20, WHITE);
+                            if (IsKeyDown(KEY_ENTER)) {
+                                
+                            }
+                            break;
+                        case D:
+                            DrawTexture(alt_d, 50, 20, WHITE);
+                            if (IsKeyDown(KEY_ENTER)) {
+                                
+                            }                        
+                            break;
+                    }
+
+                    DrawTextEx(font, "Que nome é dado aos vestígios do\npassado que ajudam os\nhistoriadores a conhecer sobre \noutros tempos?", (Vector2){55, 35}, 12, 2, BLACK);
+                    DrawTextEx(font, "  a) nao sei\n  b) isso ai\n  c) acho q eh\n  d) vei seila", (Vector2){55, 120}, 14, 2, BLACK);
+                }
+            }
+
             if (!pgtaAtiva) {
-                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, BLACK);
-            }
-            
-            if (IsKeyDown(KEY_E)) {
-                pgtaAtiva = true;
-            }
-            
-            if (pgtaAtiva) {
-                if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_UP)) {
-                    if (alt < D) {
-                        alt++;
-                    } else {
-                        alt = A;
-                    }
-                } else if (IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)) {
-                    if (alt > A) {
-                        alt--;
-                    } else {
-                        alt = D;
-                    }
-                }
-
-                switch (alt) {
-                    case A:
-                        DrawTexture(alt_a, 50, 20, WHITE);
-                        break;
-                    case B:
-                        DrawTexture(alt_b, 50, 20, WHITE);
-                        break;
-                    case C:
-                        DrawTexture(alt_c, 50, 20, WHITE);
-                        break;
-                    case D:
-                        DrawTexture(alt_d, 50, 20, WHITE);
-                        break;
-                }
-
-                DrawTextEx(font, "Que nome é dado aos vestígios do\npassado que ajudam os\nhistoriadores a conhecer sobre \noutros tempos?", (Vector2){55, 35}, 12, 2, BLACK);
-                DrawTextEx(font, "  a) nao sei\n  b) isso ai\n  c) acho q eh\n  d) vei seila", (Vector2){55, 120}, 14, 2, BLACK);
-            }
-        }
-
-        if (!pgtaAtiva) {
-            if (IsKeyDown(KEY_A)) {
-                position.x -= speed;
-                
-                if (currentFrame == 0) {
-                    DrawTexture(luigiLeft1, position.x, position.y, WHITE);
-                }
-                else if (currentFrame == 1) {
-                    DrawTexture(luigiLeft2, position.x, position.y, WHITE);
-                }
-                
-                currentFrame++;
-                if (currentFrame > 1) {
-                    currentFrame = 0;
-                }
-
-                last = 1;
-            } else if (IsKeyDown(KEY_D)) {
-                position.x += speed;
-                
-                if (currentFrame == 0) {
-                    DrawTexture(luigiRight1, position.x, position.y, WHITE);
-                }
+                if (IsKeyDown(KEY_A)) {
+                    position.x -= speed;
                     
-                else if (currentFrame == 1) {
-                    DrawTexture(luigiRight2, position.x, position.y, WHITE);
-                }
+                    if (currentFrame == 0) {
+                        DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+                    }
+                    else if (currentFrame == 1) {
+                        DrawTexture(luigiLeft2, position.x, position.y, WHITE);
+                    }
                     
-                currentFrame++;
-                if (currentFrame > 1) {
-                    currentFrame = 0;
-                }
-                
-                last = 0;
+                    currentFrame++;
+                    if (currentFrame > 1) {
+                        currentFrame = 0;
+                    }
+
+                    last = 1;
+                } else if (IsKeyDown(KEY_D)) {
+                    position.x += speed;
+                    
+                    if (currentFrame == 0) {
+                        DrawTexture(luigiRight1, position.x, position.y, WHITE);
+                    }
+                        
+                    else if (currentFrame == 1) {
+                        DrawTexture(luigiRight2, position.x, position.y, WHITE);
+                    }
+                        
+                    currentFrame++;
+                    if (currentFrame > 1) {
+                        currentFrame = 0;
+                    }
+                    
+                    last = 0;
+                } else {
+                    if (last == 1) {
+                        DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+                    }
+                    else {
+                        DrawTexture(luigiRight1, position.x, position.y, WHITE);
+                    }
+                } 
             } else {
-                if (last == 1) {
-                    DrawTexture(luigiLeft1, position.x, position.y, WHITE);
-                }
-                else {
-                    DrawTexture(luigiRight1, position.x, position.y, WHITE);
-                }
-            } 
-        } else {
-                if (last == 1) {
-                    DrawTexture(luigiLeft1, position.x, position.y, WHITE);
-                }
-                else {
-                    DrawTexture(luigiRight1, position.x, position.y, WHITE);
-                }
+                    if (last == 1) {
+                        DrawTexture(luigiLeft1, position.x, position.y, WHITE);
+                    }
+                    else {
+                        DrawTexture(luigiRight1, position.x, position.y, WHITE);
+                    }
+            }
         }
-        
         EndDrawing();
     }
     
