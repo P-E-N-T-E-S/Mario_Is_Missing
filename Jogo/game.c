@@ -198,10 +198,10 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
     int last;
     int part = 1;
     bool pgtaAtiva = false; 
-    bool moveCountry = false;
     Alternativas alt = A;
     
     for (int i = 0; i < NUM; i++) {
+        bool moveCountry = false;
         while (!WindowShouldClose()) {
             BeginDrawing();
             ClearBackground(BLACK);
@@ -237,6 +237,7 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
                             DrawTexture(alt_a, 50, 20, WHITE);
                             if (IsKeyDown(KEY_ENTER)) {
                                 moveCountry = true;
+                                break;
                             } 
                             break;
                         case B:
@@ -307,7 +308,8 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
             }
 
             if (moveCountry) {
-                break;
+                moveCountry = false;
+                i++;
             }
             
 
