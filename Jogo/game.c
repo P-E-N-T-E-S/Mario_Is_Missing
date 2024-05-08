@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "raylib.h"
-#include "function.c"
 
 #define WIDTH 510
 #define HEIGHT 446
@@ -130,7 +129,7 @@ int main(void)
                 animacaoLuigi(arg, customFont, pixelFont);
                 break;
             case GUESS:
-                
+
             case GAME_OVER:
 
             case END:
@@ -177,20 +176,20 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
     Texture2D luigiRight1 = LoadTexture("src/Sprites/Luigi/R.png");
     Texture2D luigiRight2 = LoadTexture("src/Sprites/Luigi/W_R.png");
 
-    // Load alternativas
     Texture2D alt_a = LoadTexture("src/Telas/escolha_a.png");
     Texture2D alt_b = LoadTexture("src/Telas/escolha_b.png");
     Texture2D alt_c = LoadTexture("src/Telas/escolha_c.png");
     Texture2D alt_d = LoadTexture("src/Telas/escolha_d.png");
 
-    // Load Cenarios
+
+    Texture2D rio = LoadTexture("src/Background/Rio/Rio.png");
     Texture2D texturasCenarios[NUM];
-    texturasCenarios[MEX] = LoadTexture("/src/Backgrounds/mexico.png");
-    texturasCenarios[ARG] = LoadTexture("/src/Backgrounds/argentina.png");
-    texturasCenarios[BRA] = LoadTexture("/src/Backgrounds/brasil.png");
-    texturasCenarios[FRA] = LoadTexture("/src/Backgrounds/franca.png"); 
-    texturasCenarios[ITA] = LoadTexture("/src/Backgrounds/italia.png");
-    texturasCenarios[CHI] = LoadTexture("/src/Backgrounds/china.png");
+    texturasCenarios[MEX] = LoadTexture("src/Background/Mexico/Mexico.png");
+    texturasCenarios[ARG] = LoadTexture("src/Background/BuenosAires/BuenosAires.png");
+    texturasCenarios[BRA] = LoadTexture("src/Background/Rio/Rio.png");
+    texturasCenarios[FRA] = LoadTexture("src/Background/Paris/Paris.png"); 
+    texturasCenarios[ITA] = LoadTexture("src/Background/Roma/Roma.png");
+    texturasCenarios[CHI] = LoadTexture("src/Background/China/China.png");
 
     Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
     
@@ -199,16 +198,16 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
     int last;
     int part = 1;
     bool pgtaAtiva = false; 
+    bool moveCountry = false;
     Alternativas alt = A;
-    sortearArquivo();
+    
+    for (int i = 0; i < NUM; i++) {
+        while (!WindowShouldClose()) {
+            BeginDrawing();
+            ClearBackground(BLACK);
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(BLACK);
-
-        for (int i = 0; i < NUM; i++) {
             DrawTexture(texturasCenarios[i], 0, 0, WHITE);
-            
+                
             if (position.x >= 310) {
                 if (!pgtaAtiva) {
                     DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, BLACK);
@@ -219,7 +218,6 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
                 }
                 
                 if (pgtaAtiva) {
-
                     if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_UP)) {
                         if (alt < D) {
                             alt++;
@@ -238,32 +236,17 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
                         case A:
                             DrawTexture(alt_a, 50, 20, WHITE);
                             if (IsKeyDown(KEY_ENTER)) {
-                                //if (alt_a == resposta) {
-                                    //DrawText("Quer tentar advinhar?");
-                                    // vai pro GUESS_NAME;
-                                //}
-                                //else {
-                                    // vai pro GAME OVER;
-                                //}
-                            }
+                                moveCountry = true;
+                            } 
                             break;
                         case B:
                             DrawTexture(alt_b, 50, 20, WHITE);
-                            if (IsKeyDown(KEY_ENTER)) {
-                                
-                            }
                             break;
                         case C:
                             DrawTexture(alt_c, 50, 20, WHITE);
-                            if (IsKeyDown(KEY_ENTER)) {
-                                
-                            }
                             break;
                         case D:
                             DrawTexture(alt_d, 50, 20, WHITE);
-                            if (IsKeyDown(KEY_ENTER)) {
-                                
-                            }                        
                             break;
                     }
 
@@ -271,7 +254,7 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
                     DrawTextEx(font, "  a) nao sei\n  b) isso ai\n  c) acho q eh\n  d) vei seila", (Vector2){55, 120}, 14, 2, BLACK);
                 }
             }
-
+            
             if (!pgtaAtiva) {
                 if (IsKeyDown(KEY_A)) {
                     position.x -= speed;
@@ -322,8 +305,14 @@ void animacaoLuigi(Texture2D bg, Font font, Font fontpgta) {
                         DrawTexture(luigiRight1, position.x, position.y, WHITE);
                     }
             }
+
+            if (moveCountry) {
+                break;
+            }
+            
+
+            EndDrawing();
         }
-        EndDrawing();
     }
     
     UnloadTexture(luigiLeft1);
