@@ -112,8 +112,8 @@ int main(void)
                 break;
             case RANKING:
                 if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
-                 currentScreen = START;
-                        break;
+                    currentScreen = START;
+                    break;
                 }
                
                 if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
@@ -147,13 +147,12 @@ int main(void)
             case GAME:
                 Alternativas resposta;
                 while (cenarios < NUM) {
-                    resposta = animacaoLuigi(texturasCenarios[0], customFont);
+                    resposta = animacaoLuigi(texturasCenarios[cenarios], customFont);
                     break;
                 }
                 if (resposta == 0) {
                     currentScreen = DICA;
                 }
-                
                 
                 break;
             case DICA:
@@ -180,18 +179,18 @@ int main(void)
                     case SIM:
                         DrawTexture(sim, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
-                            //currentScreen = GUESS;
+                            currentScreen = GUESS;
+                            break;
                         }
                         break;
                     case NAO:
                         DrawTexture(nao, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
-                            ClearBackground(BLACK);
-                            irGame = true;
-                            printf("XXXXXXXXXXXXXXXXXX\n");
-                            printf("%d\n", currentScreen);
-            
+                            printf("XXXXXXXXXXXX\n");
+                            currentScreen = GAME;
+                            break;
                         }
+                        break;
                 }
                 
                 DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
@@ -200,11 +199,7 @@ int main(void)
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
 
                 
-                if (irGame) {
-                    currentScreen = GAME;
-                    printf("%d\n", currentScreen);
-                    break;
-                }
+          
                 break;
             case GUESS:
                 DrawTexture(type_page, 0, 0, WHITE); 
