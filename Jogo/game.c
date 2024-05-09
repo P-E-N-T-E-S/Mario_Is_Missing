@@ -13,6 +13,7 @@ typedef enum {
     RANKING_PAGE,
     GET_NAME,
     GAME,
+    DICA,
     GUESS,
     GAME_OVER,
     WIN
@@ -34,6 +35,11 @@ typedef enum {
     D
 } Alternativas;
 
+typedef enum {
+    SIM,
+    NAO
+} SimouNao;
+
 void TextInput(char *inputText, int *charCount);
 Alternativas animacaoLuigi(Texture2D bg, Font font);
 
@@ -53,13 +59,17 @@ int main(void)
     // Load Font
     Font customFont = LoadFont("src/MarioFont.ttf");
 
-    // Nome
+    // Nome e dica
     char get_name[MAX_INPUT_CHARS + 1] = {0};
     int charCountName = 0;
     char get_guess[10] = {0};
     int charCountGuess = 0;
+
     // Load typing page
     Texture2D type_page = LoadTexture("src/Telas/type_page.png");
+    Texture dica = LoadTexture("src/Telas/dica.png");
+    Texture2D sim = LoadTexture("src/Telas/escolha_c.png");
+    Texture2D nao = LoadTexture("src/Telas/escolha_d.png");
 
     // Load Backgrounds
     Texture2D texturasCenarios[NUM];
@@ -74,6 +84,7 @@ int main(void)
     Texture2D end = LoadTexture("src/Telas/end.png");
 
     ScreenState currentScreen = START;
+    int cenarios = 0;
 
     while (!WindowShouldClose())
     {
@@ -134,10 +145,66 @@ int main(void)
                 }
                 break;
             case GAME:
-          
-                Alternativas resposta = animacaoLuigi(texturasCenarios[0], customFont);
-                currentScreen = GUESS;
+                Alternativas resposta;
+                while (cenarios < NUM) {
+                    resposta = animacaoLuigi(texturasCenarios[0], customFont);
+                    break;
+                }
+                if (resposta == 0) {
+                    currentScreen = DICA;
+                }
                 
+                
+                break;
+            case DICA:
+                static SimouNao chutar;
+                bool irGame = false;
+                cenarios++;
+                DrawTexture(dica, 0, 0, WHITE); 
+
+                if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
+                    if (chutar == NAO) {
+                        chutar = SIM;
+                    } else {
+                        chutar = NAO;
+                    }
+                } else if (IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)) {
+                    if (chutar == SIM) {
+                        chutar = NAO;
+                    } else {
+                        chutar = SIM;
+                    }
+                }    
+                
+                switch (chutar) {
+                    case SIM:
+                        DrawTexture(sim, 50, 20, WHITE); 
+                        if (IsKeyDown(KEY_ENTER)) {
+                            //currentScreen = GUESS;
+                        }
+                        break;
+                    case NAO:
+                        DrawTexture(nao, 50, 20, WHITE); 
+                        if (IsKeyDown(KEY_ENTER)) {
+                            ClearBackground(BLACK);
+                            irGame = true;
+                            printf("XXXXXXXXXXXXXXXXXX\n");
+                            printf("%d\n", currentScreen);
+            
+                        }
+                }
+                
+                DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
+                DrawTextEx(customFont, "O Templo do Ceu e um complexo\nreligioso onde os imperadores\nrealizavam rituais para garantir\nboas colheitas e bencaos divinas.", (Vector2){55, 45}, 12, 2, BLACK);
+                DrawTextEx(customFont, "deseja advinhar onde o mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
+                DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
+
+                
+                if (irGame) {
+                    currentScreen = GAME;
+                    printf("%d\n", currentScreen);
+                    break;
+                }
                 break;
             case GUESS:
                 DrawTexture(type_page, 0, 0, WHITE); 
@@ -147,7 +214,8 @@ int main(void)
                 printf("%d", charCountGuess);
                 if (IsKeyPressed(KEY_ENTER) && get_guess[0] != '\0'){ 
                     // if (get_guess == lugar)
-                        // currentScreen = END;
+                        // currentScreen = GAME;
+                    // else if cabou perguntas
                     // else
                         // currentScreen = GAME_OVER;
                     break;
@@ -230,7 +298,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
             }
             
             if (pgtaAtiva) {
-                if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_UP)) {
+                if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
                     if (alt < D) {
                         alt++;
                     } else {
