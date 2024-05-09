@@ -1,8 +1,8 @@
 Qual é o maior oceano do mundo?
-a) Atlântico
-b) Pacífico
-c) Índico
-d) Ártico
+a) Atlantico
+b) Pacifico
+c) Indico
+d) Artico
 1
 
 Quem foi o líder da Revolução Cubana em 1959?
@@ -15,11 +15,11 @@ d) Satoru Gojo
 Quem foi o primeiro imperador do Brasil?
 a) Dom Pedro I
 b) Dom Pedro II
-c) Dom João VI
+c) Dom Joao VI
 d) Dom Manuel I
 0
 
-Quem foi o autor da obra "Dom Quixote de la Mancha"?
+Quem foi o autor da obra Dom Quixote de la Mancha?
 a) William Shakespeare
 b) Dante Alighieri
 c) Miguel de Cervantes
@@ -28,8 +28,8 @@ d) Gustave Flaubert
 
 Qual é o maior deserto do mundo?
 a) Deserto do Saara
-b) Deserto da Arábia
-c) Deserto da Patagônia
+b) Deserto da Arabia
+c) Deserto da Patagonia
 d) Deserto de Gobi
 0
 
