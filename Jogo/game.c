@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include "raylib.h"
 #include "function.c"
 
@@ -8,8 +10,7 @@
 #define NUM 6
 
 typedef enum { 
-    START, 
-    RANKING,
+    MENU,
     RANKING_PAGE,
     GET_NAME,
     GAME,
@@ -18,6 +19,11 @@ typedef enum {
     GAME_OVER,
     WIN
 } ScreenState;
+
+typedef enum {
+    START, 
+    RANKING
+} MenuOpcoes;
 
 typedef enum {
     MEX,
@@ -42,12 +48,17 @@ typedef enum {
 
 void TextInput(char *inputText, int *charCount);
 Alternativas animacaoLuigi(Texture2D bg, Font font);
+bool isMusicOver(Music musica);
+void loopMusic(Music musica);
+void gameplayMusic(Music musica, int volume);
 
 int main(void)
 {
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
     SetTargetFPS(15); 
-
+    InitAudioDevice();
+    SetMasterVolume(1);
+    
     // Load Menu
     Texture2D menu = LoadTexture("src/Telas/menu.png");
     Texture2D start = LoadTexture("src/Telas/start.png");
@@ -83,52 +94,52 @@ int main(void)
     // Load end
     Texture2D end = LoadTexture("src/Telas/end.png");
 
-    ScreenState currentScreen = START;
+    // Load music
+    Music temaMenu = LoadMusicStream("src/Ost/Menu.mp3");
+
+    ScreenState currentScreen = MENU;
     int cenarios = 0;
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
         switch (currentScreen) {
-            case START:
-                if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
-                 currentScreen = RANKING;
+            case MENU:
+                static MenuOpcoes opcao;
+                gameplayMusic(temaMenu, 100);
+                DrawTexture(menu, 0, 0, WHITE); 
+   
+                if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
+                    if (opcao == RANKING) {
+                        opcao = START;
+                    } else {
+                        opcao = RANKING;
+                    }
+                } else if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+                    if (opcao == START) {
+                        opcao = RANKING;
+                    } else {
+                        opcao = START;
+                    }
+                }  
+
+                switch (opcao) {
+                    case START:
+                        DrawTexture(start, 165, 260, WHITE); 
+                        if (IsKeyDown(KEY_ENTER)) { 
+                            currentScreen = GET_NAME;
+                            break;
+                        }
+                        break;
+                    case RANKING:
+                        DrawTexture(ranking, 165, 260, WHITE); 
+                        if (IsKeyDown(KEY_ENTER)) { 
+                            currentScreen = RANKING_PAGE;
+                            break;
+                        }
                         break;
                 }
-               
-                if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
-                    currentScreen = RANKING;
-                    break;
-                }
 
-                DrawTexture(menu, 0, 0, WHITE); 
-                DrawTexture(start, 165, 260, WHITE); 
-                if (IsKeyPressed(KEY_ENTER)) { 
-                    currentScreen = GET_NAME;
-                    UnloadTexture(menu);
-                    UnloadTexture(start);
-                    break;
-                }
-                break;
-            case RANKING:
-                if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
-                    currentScreen = START;
-                    break;
-                }
-               
-                if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
-                    currentScreen = START;
-                    break;
-                }
-
-                DrawTexture(menu, 0, 0, WHITE); 
-                DrawTexture(ranking, 165, 260, WHITE); 
-                if (IsKeyPressed(KEY_ENTER)) { 
-                    currentScreen = RANKING_PAGE;
-                    UnloadTexture(menu);
-                    UnloadTexture(start);
-                    break;
-                }
                 break;
             case RANKING_PAGE:
                 DrawTexture(ranking_page, 0, 0, WHITE);
@@ -146,19 +157,27 @@ int main(void)
                 break;
             case GAME:
                 Alternativas resposta;
+
                 while (cenarios < NUM) {
                     resposta = animacaoLuigi(texturasCenarios[cenarios], customFont);
+                    cenarios++;
                     break;
                 }
-                if (resposta == 0) {
+
+                if (resposta == 0 && cenarios < (NUM - 1)) { // IF RESPOSTA == CORRETA
                     currentScreen = DICA;
+                }
+                else if (cenarios == (NUM - 1)) {
+                    currentScreen = GUESS;
+                }
+                else {
+                    currentScreen = GAME_OVER;
                 }
                 
                 break;
             case DICA:
                 static SimouNao chutar;
-                bool irGame = false;
-                cenarios++;
+
                 DrawTexture(dica, 0, 0, WHITE); 
 
                 if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
@@ -186,7 +205,6 @@ int main(void)
                     case NAO:
                         DrawTexture(nao, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
-                            printf("XXXXXXXXXXXX\n");
                             currentScreen = GAME;
                             break;
                         }
@@ -198,28 +216,38 @@ int main(void)
                 DrawTextEx(customFont, "deseja advinhar onde o mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
 
-                
-          
                 break;
             case GUESS:
+                char local[7] = "PEQUIM";
+
                 DrawTexture(type_page, 0, 0, WHITE); 
+                
                 TextInput(get_guess, &charCountGuess);
+                
                 DrawTextEx(customFont, "em que cidade o mario\nesta:", (Vector2){60, 90}, 16, 2, WHITE);
                 DrawTextEx(customFont, get_guess, (Vector2){60, 140}, 20, 2, WHITE);
-                printf("%d", charCountGuess);
+                
                 if (IsKeyPressed(KEY_ENTER) && get_guess[0] != '\0'){ 
-                    // if (get_guess == lugar)
-                        // currentScreen = GAME;
-                    // else if cabou perguntas
-                    // else
-                        // currentScreen = GAME_OVER;
+                    
+                    if (strcmp(get_guess, local) == 0) {
+                        currentScreen = WIN;
+                    }
+                    else if (strcmp(get_guess, local) != 0 && cenarios == (NUM - 1)) {
+                        currentScreen = GAME_OVER;
+                    }
+                    else {
+                        currentScreen = GAME;
+                    }
+                    memset(get_guess, '\0', sizeof(get_guess));
                     break;
                 }
                 break;
             case GAME_OVER:
-
-            case WIN:
                 //DrawTexture(end, 0, 0, WHITE); 
+                break;
+            case WIN:
+                DrawTexture(end, 0, 0, WHITE); 
+                break;
                 
         }
         EndDrawing();
@@ -285,7 +313,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
             
         if (position.x >= 310) {
             if (!pgtaAtiva) {
-                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, BLACK);
+                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, WHITE);
             }
             
             if (IsKeyDown(KEY_E)) {
@@ -388,4 +416,21 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
     UnloadTexture(luigiLeft2);
     UnloadTexture(luigiRight1);
     UnloadTexture(luigiRight2);
+}
+
+
+bool isMusicOver(Music musica) { 
+    if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) >= 1) return true;
+    if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) <= 0) return true;
+    else return false;
+}
+
+void loopMusic(Music musica) { 
+    if(isMusicOver(musica)) UpdateMusicStream(musica);
+}
+
+void gameplayMusic(Music musica, int volume) { 
+    SetMusicVolume(musica, volume);
+    UpdateMusicStream(musica);
+    loopMusic(musica);
 }
