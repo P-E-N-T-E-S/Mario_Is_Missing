@@ -50,14 +50,13 @@ void TextInput(char *inputText, int *charCount);
 Alternativas animacaoLuigi(Texture2D bg, Font font);
 bool isMusicOver(Music musica);
 void loopMusic(Music musica);
-void gameplayMusic(Music musica, int volume);
 
 int main(void)
 {
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
     SetTargetFPS(15); 
     InitAudioDevice();
-    SetMasterVolume(1);
+    SetMasterVolume(0.7);
     
     // Load Menu
     Texture2D menu = LoadTexture("src/Telas/menu.png");
@@ -96,6 +95,11 @@ int main(void)
 
     // Load music
     Music temaMenu = LoadMusicStream("src/Ost/Menu.mp3");
+    Music temaWin = LoadMusicStream("src/Ost/FinalBom.mp3");
+    Music temaOver = LoadMusicStream("src/Ost/FinalRuim.mp3");
+    PlayMusicStream(temaMenu);
+    PlayMusicStream(temaWin);
+    PlayMusicStream(temaOver);
 
     ScreenState currentScreen = MENU;
     int cenarios = 0;
@@ -106,7 +110,8 @@ int main(void)
         switch (currentScreen) {
             case MENU:
                 static MenuOpcoes opcao;
-                gameplayMusic(temaMenu, 100);
+                UpdateMusicStream(temaMenu);
+                loopMusic(temaMenu);
                 DrawTexture(menu, 0, 0, WHITE); 
    
                 if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
@@ -244,9 +249,13 @@ int main(void)
                 break;
             case GAME_OVER:
                 //DrawTexture(end, 0, 0, WHITE); 
+                //UpdateMusicStream(temaOver);
+                //loopMusic(temaOver);
                 break;
             case WIN:
                 DrawTexture(end, 0, 0, WHITE); 
+                UpdateMusicStream(temaWin);
+                loopMusic(temaWin);
                 break;
                 
         }
@@ -255,7 +264,7 @@ int main(void)
     }
 
     CloseWindow();
-
+    CloseAudioDevice();
     return 0;
 }
 
@@ -278,7 +287,6 @@ void TextInput(char *inputText, int *charCount) {
         {
             inputText[*charCount] = '\0';
             *charCount = 0;
-            printf("Texto digitado: %s\n", inputText);
         }
     }
 }
@@ -313,7 +321,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
             
         if (position.x >= 310) {
             if (!pgtaAtiva) {
-                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 90}, 15, 2, WHITE);
+                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 30}, 15, 2, RED);
             }
             
             if (IsKeyDown(KEY_E)) {
@@ -418,7 +426,6 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
     UnloadTexture(luigiRight2);
 }
 
-
 bool isMusicOver(Music musica) { 
     if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) >= 1) return true;
     if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) <= 0) return true;
@@ -427,10 +434,4 @@ bool isMusicOver(Music musica) {
 
 void loopMusic(Music musica) { 
     if(isMusicOver(musica)) UpdateMusicStream(musica);
-}
-
-void gameplayMusic(Music musica, int volume) { 
-    SetMusicVolume(musica, volume);
-    UpdateMusicStream(musica);
-    loopMusic(musica);
 }
