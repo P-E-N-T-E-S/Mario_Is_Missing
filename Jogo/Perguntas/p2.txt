@@ -12,14 +12,14 @@ c) Neon Genesis Evangelion
 d) Mona Lisa
 3
 
-A linha do Equador é essencial para o estabelecimento de um dos dados utilizados na localização de um determinado ponto do globo terrestre, visto que através dessa linha imaginária é possível obter:
+Com a linha do Equador é possível obter:
 a) Longitude
 b) Zonas Climáticas
 c) Coordenadas Geográficas
 d) Latitude
 3
 
-A América Central é uma subdivisão do continente americano, sendo composta por 20 países. Qual dessas opções tem um país que NÃO faz parte da região Central da América?
+A América Central é uma subdivisão do continente americano, sendo composta por\n 20 países. Qual dessas opções tem um país que NÃO faz parte da região Central da\n América?
 a) Honduras, Guatemala, Trinidad e Tobago
 b) Granada, Panamá, El Salvador
 c) México, Cuba, Costa Rica
