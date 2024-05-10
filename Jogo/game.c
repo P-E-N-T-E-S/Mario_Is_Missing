@@ -54,7 +54,8 @@ void loopMusic(Music musica);
 int main(void)
 {
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
-    SetTargetFPS(15); 
+    SetTargetFPS(60);
+    SetWindowState(FLAG_VSYNC_HINT);
     InitAudioDevice();
     SetMasterVolume(0.7);
     
@@ -253,6 +254,8 @@ int main(void)
                 //loopMusic(temaOver);
                 break;
             case WIN:
+                SetWindowState(FLAG_VSYNC_HINT);
+                SetTargetFPS(60);
                 DrawTexture(end, 0, 0, WHITE); 
                 UpdateMusicStream(temaWin);
                 loopMusic(temaWin);
@@ -304,7 +307,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
     Texture2D alt_d = LoadTexture("src/Telas/escolha_d.png");
 
     Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
-    
+    SetTargetFPS(15); 
     int currentFrame = 0;
     float speed = 8.0f;
     int last;
