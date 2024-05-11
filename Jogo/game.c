@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "raylib.h"
-#include "main.c"
+#include "function.c"
 #include "ranking.c"
 
 #define WIDTH 510
@@ -108,8 +108,11 @@ int main(void)
     ScreenState currentScreen = MENU;
     int cenarios = 0;
     int pontos = 120;
+
     Questions *head = NULL;
-    lerArquivo(&head, "p1.txt");
+    int respostas[6];
+    sortearArquivo(&head, respostas);
+
 
     while (!WindowShouldClose())
     {
@@ -122,17 +125,9 @@ int main(void)
                 DrawTexture(menu, 0, 0, WHITE); 
    
                 if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-                    if (opcao == RANKING) {
-                        opcao = START;
-                    } else {
-                        opcao = RANKING;
-                    }
+                    opcao = RANKING;
                 } else if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-                    if (opcao == START) {
-                        opcao = RANKING;
-                    } else {
-                        opcao = START;
-                    }
+                    opcao = START;
                 }  
 
                 switch (opcao) {
@@ -184,19 +179,19 @@ int main(void)
                 }
                 break;
             case GAME:
-                Alternativas resposta;
+                Alternativas resposta_usuario;
 
                 while (cenarios < NUM) {
                     if (cenarios > 0) {
                         pontos -= 20;
                     }
-                    resposta = animacaoLuigi(texturasCenarios[cenarios], customFont, head);
+                    resposta_usuario = animacaoLuigi(texturasCenarios[cenarios], customFont, head);
                     remover(&head);
                     cenarios++;
                     break;
                 }
-
-                if (resposta == 0 && cenarios < NUM) { // IF RESPOSTA == CORRETA
+                printf("%d", head->resposta);
+                if ((resposta_usuario == head->resposta) && cenarios < NUM) { 
                     currentScreen = DICA;
                 }
                 else if (cenarios == NUM) {
@@ -385,18 +380,28 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
                         break;
                     case B:
                         DrawTexture(alt_b, 50, 20, WHITE);
+                        if (IsKeyDown(KEY_ENTER)) {
+                            return alt;
+                            break;
+                        } 
                         break;
                     case C:
                         DrawTexture(alt_c, 50, 20, WHITE);
+                        if (IsKeyDown(KEY_ENTER)) {
+                            return alt;
+                            break;
+                        }                         
                         break;
                     case D:
                         DrawTexture(alt_d, 50, 20, WHITE);
+                        if (IsKeyDown(KEY_ENTER)) {
+                            return alt;
+                            break;
+                        }                         
                         break;
                 }
-                
-    
-
-                DrawText32Chars(font, head->perguntas, (Vector2){55, 35}, 12, 2, BLACK);
+        
+                DrawText32Chars(font, head->pergunta, (Vector2){55, 35}, 12, 2, BLACK);
                 DrawTextEx(font, head->a, (Vector2){80, 122}, 12, 2, BLACK);
                 DrawTextEx(font, head->b, (Vector2){80, 138}, 12, 2, BLACK);
                 DrawTextEx(font, head->c, (Vector2){80, 154}, 12, 2, BLACK);
@@ -456,7 +461,6 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
         }
         EndDrawing();
     }
-    
     UnloadTexture(luigiLeft1);
     UnloadTexture(luigiLeft2);
     UnloadTexture(luigiRight1);
@@ -485,7 +489,6 @@ void DrawText32Chars(Font font, const char *text, Vector2 position, float fontSi
         substring[i] = '\0';
 
         DrawTextEx(font, substring, (Vector2){position.x, position.y + y * (fontSize + spacing)}, fontSize, spacing, color);
-
         y++; 
     }
 }
