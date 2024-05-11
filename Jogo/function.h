@@ -16,10 +16,11 @@ typedef struct Questions {
     struct Questions *next;
 } Questions;
 
-typedef struct ranking {
+typedef struct lista_ranking {
     int pontos;
     char nome[30];
-} Ranking;
+    struct lista_ranking *next;
+} ListaRanking;
 
 //pedro
 void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d, int resposta);
@@ -28,15 +29,15 @@ void lerArquivo(Questions **head, const char *fileName, int *array);
 void imprimirPrimeiroValor(Questions *head);
 void remover(Questions **head);
 void sortearArquivo(Questions **head, int *array);
+int randomValue();
 
 //thomaz
-int randomValue();
 int jogadores(FILE *dados);
 int ordernar_ranking();
-void sortranking(Ranking *ranking, int n);
-void addRanking(Ranking *ranking, int qtd);
+void sortranking(ListaRanking *ranking);
+void addRanking(ListaRanking *ranking);
 void salvar_ranking(char *get_name, int pontos);
-Ranking* printranking();
+ListaRanking* printranking();
 char* strpontos(int pontos);
 
 #endif
