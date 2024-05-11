@@ -4,35 +4,30 @@ b) Criacionista
 c) Budista
 d) Futebolista
 0
-
 Qual famosa obra de arte Leonardo da Vinci criou?
 a) Guernica
 b) Abapuru
 c) Neon Genesis Evangelion
 d) Mona Lisa
 3
-
 Com a linha do Equador e possivel obter:
 a) Longitude
 b) Zonas Climaticas
 c) Coordenadas Geograficas
 d) Latitude
 3
-
-Qual dessas opcoes tem um pais que NAO faz parte da regiao Central da\n America Central?
-a) Honduras, Guatemala, Trinidad e Tobago
-b) Granada, Panama, El Salvador
+Qual dessas opcoes tem um pais que NAO faz parte da regiao Central da America Central?
+a) Honduras, Chile, Haiti
+b) Gana, Panama, El Salvador
 c) Mexico, Cuba, Costa Rica
-d) Nicaragua, Bahamas, Haiti
+d) Nigeria, Bahamas, Haiti
 2
-
 Quem foi Aristoteles?
 a) O irmao do Aoi Todo
 b) O invertor do Aviao
 c) Um filosofo Grego
 d) O criador do Quadrado
 2
-
 Qual era a capital do Imperio Romano?
 a) Atenas
 b) Roma
