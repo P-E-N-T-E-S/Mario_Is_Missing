@@ -2,7 +2,8 @@
 #include <string.h>
 #include <ctype.h>
 #include "raylib.h"
-#include "function.c"
+#include "main.c"
+#include "ranking.c"
 
 #define WIDTH 510
 #define HEIGHT 446
@@ -47,9 +48,10 @@ typedef enum {
 } SimouNao;
 
 void TextInput(char *inputText, int *charCount);
-Alternativas animacaoLuigi(Texture2D bg, Font font);
+Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head);
 bool isMusicOver(Music musica);
 void loopMusic(Music musica);
+void DrawText32Chars(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color color);
 
 int main(void)
 {
@@ -104,6 +106,9 @@ int main(void)
 
     ScreenState currentScreen = MENU;
     int cenarios = 0;
+    int pontos = 120;
+    Questions *head = NULL;
+    lerArquivo(&head, "p1.txt");
 
     while (!WindowShouldClose())
     {
@@ -149,6 +154,21 @@ int main(void)
                 break;
             case RANKING_PAGE:
                 DrawTexture(ranking_page, 0, 0, WHITE);
+                ordernar_ranking();
+                Ranking *ranking = printranking();
+                FILE *dados = fopen("ranking.txt", "r");
+                int qtd = jogadores(dados);
+                int aux = 10;
+
+                if (qtd < aux) {
+                    aux = qtd;
+                }
+
+                for (int i = 0; i < aux; i++) {
+                    printf("%s\n", ranking[i].nome);
+                    DrawTextEx(customFont, ranking[i].nome, (Vector2){60, 90}, 20, 2, BLACK);
+                }
+
                 break;
             case GET_NAME:
                 DrawTexture(type_page, 0, 0, WHITE); 
@@ -165,15 +185,19 @@ int main(void)
                 Alternativas resposta;
 
                 while (cenarios < NUM) {
-                    resposta = animacaoLuigi(texturasCenarios[cenarios], customFont);
+                    if (cenarios > 0) {
+                        pontos -= 20;
+                    }
+                    resposta = animacaoLuigi(texturasCenarios[cenarios], customFont, head);
+                    remover(&head);
                     cenarios++;
                     break;
                 }
 
-                if (resposta == 0 && cenarios < (NUM - 1)) { // IF RESPOSTA == CORRETA
+                if (resposta == 0 && cenarios < NUM) { // IF RESPOSTA == CORRETA
                     currentScreen = DICA;
                 }
-                else if (cenarios == (NUM - 1)) {
+                else if (cenarios == NUM) {
                     currentScreen = GUESS;
                 }
                 else {
@@ -236,6 +260,7 @@ int main(void)
                 if (IsKeyPressed(KEY_ENTER) && get_guess[0] != '\0'){ 
                     
                     if (strcmp(get_guess, local) == 0) {
+                        salvar_ranking(get_name, pontos);
                         currentScreen = WIN;
                     }
                     else if (strcmp(get_guess, local) != 0 && cenarios == (NUM - 1)) {
@@ -294,7 +319,7 @@ void TextInput(char *inputText, int *charCount) {
     }
 }
 
-Alternativas animacaoLuigi(Texture2D bg, Font font) {
+Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
     // Load sprites
     Texture2D luigiLeft1 = LoadTexture("src/Sprites/Luigi/L.png");
     Texture2D luigiLeft2 = LoadTexture("src/Sprites/Luigi/W_L.png");
@@ -364,9 +389,14 @@ Alternativas animacaoLuigi(Texture2D bg, Font font) {
                         DrawTexture(alt_d, 50, 20, WHITE);
                         break;
                 }
+                
+    
 
-                DrawTextEx(font, "Que nome é dado aos vestígios do\npassado que ajudam os\nhistoriadores a conhecer sobre \noutros tempos?", (Vector2){55, 35}, 12, 2, BLACK);
-                DrawTextEx(font, "  a) nao sei\n  b) isso ai\n  c) acho q eh\n  d) vei seila", (Vector2){55, 120}, 14, 2, BLACK);
+                DrawText32Chars(font, head->perguntas, (Vector2){55, 35}, 12, 2, BLACK);
+                DrawTextEx(font, head->a, (Vector2){80, 122}, 12, 2, BLACK);
+                DrawTextEx(font, head->b, (Vector2){80, 138}, 12, 2, BLACK);
+                DrawTextEx(font, head->c, (Vector2){80, 154}, 12, 2, BLACK);
+                DrawTextEx(font, head->d, (Vector2){80, 170}, 12, 2, BLACK);
             }
         }
         
@@ -437,4 +467,21 @@ bool isMusicOver(Music musica) {
 
 void loopMusic(Music musica) { 
     if(isMusicOver(musica)) UpdateMusicStream(musica);
+}
+
+void DrawText32Chars(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color color) {
+    int y = 0;
+    int index = 0;
+    while (text[index] != '\0') {
+        char substring[33];
+        int i;
+        for (i = 0; i < 32 && text[index] != '\0'; i++, index++) {
+            substring[i] = text[index];
+        }
+        substring[i] = '\0';
+
+        DrawTextEx(font, substring, (Vector2){position.x, position.y + y * (fontSize + spacing)}, fontSize, spacing, color);
+
+        y++; 
+    }
 }

@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct questiontree {
+typedef struct Questions {
     char *perguntas;
     char *a;
     char *b;
     char *c;
     char *d;
-    struct questiontree *next;
-} Questiontree;
+    struct Questions *next;
+} Questions;
 
-void inserir(Questiontree **head, char *pergunta, char *a, char *b, char *c, char *d);
+void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d);
 
-void lerArquivo(Questiontree **head, const char *fileName){
+void lerArquivo(Questions **head, const char *fileName){
     FILE *arquivo = fopen(fileName, "r");
     if(arquivo == NULL){
         printf("Erro ao abrir o arquivo");
@@ -31,8 +31,8 @@ void lerArquivo(Questiontree **head, const char *fileName){
     fclose(arquivo);
 }
 
-void inserir(Questiontree **head, char *pergunta, char *a, char *b, char *c, char *d) {
-    Questiontree *novo = (Questiontree *)malloc(sizeof(Questiontree));
+void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d) {
+    Questions *novo = (Questions *)malloc(sizeof(Questions));
     if (novo != NULL) {
         novo->perguntas = strdup(pergunta);
         novo->a = strdup(a);
@@ -44,7 +44,7 @@ void inserir(Questiontree **head, char *pergunta, char *a, char *b, char *c, cha
         if (*head == NULL) {
             *head = novo;
         } else {
-            Questiontree *aux = *head;
+            Questions *aux = *head;
             while (aux->next != NULL) {
                 aux = aux->next;
             }
@@ -53,8 +53,8 @@ void inserir(Questiontree **head, char *pergunta, char *a, char *b, char *c, cha
     }
 }
 
-void remover(Questiontree **head){
-    Questiontree *temp;
+void remover(Questions **head){
+    Questions *temp;
     if(*head != NULL){
         temp = *head;
         *head = (*head)->next;
@@ -62,7 +62,7 @@ void remover(Questiontree **head){
     }
 }
 
-void imprimirPrimeiroValor(Questiontree *head) {
+void imprimirPrimeiroValor(Questions *head) {
     printf("%s\n", head->perguntas);
     printf("%s\n", head->a);
     printf("%s\n", head->b);
@@ -70,27 +70,3 @@ void imprimirPrimeiroValor(Questiontree *head) {
     printf("%s\n", head->d);
 }
 
-int main() {
-    int respostas[] = {1, 2, 3, 4, 5, 6};
-    int resposta;
-    int j = 0;
-    Questiontree *head = NULL;
-    lerArquivo(&head, "p1.txt");
-
-    for (int i = 0; i < 6; i++) {
-        imprimirPrimeiroValor(head);
-        scanf("%d", &resposta);
-
-        if (resposta == respostas[j]) {
-            printf("U win!\n");
-            remover(&head);
-        } else {
-            printf("U lose\n");
-            break;
-        }
-
-        j++;
-    }
-
-    return 0;
-}
