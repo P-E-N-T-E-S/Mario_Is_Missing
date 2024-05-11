@@ -112,6 +112,7 @@ int main(void)
     Questions *head = NULL;
     int respostas[6];
     sortearArquivo(&head, respostas);
+    aleatorizarPerguntas(&head);
 
 
     while (!WindowShouldClose())
@@ -150,22 +151,19 @@ int main(void)
                 break;
             case RANKING_PAGE:
                 DrawTexture(ranking_page, 0, 0, WHITE);
+                ListaRanking *headRank = NULL;
                 ordernar_ranking();
-                Ranking *ranking = printranking();
-                FILE *dados = fopen("ranking.txt", "r");
-                int qtd = jogadores(dados);
-                int aux = 10;
+                ListaRanking *ranking = printranking();
 
-                if (qtd < aux) {
-                    aux = qtd;
-                }
-                
-                for (int i = 0; i < aux; i++) {
-                    char *str_pontos = strpontos(ranking[i].pontos);
-                    DrawTextEx(customFont, ranking[i].nome, (Vector2){120, (100 + (30 * i))}, 20, 2, BLACK);
-                    DrawTextEx(customFont, str_pontos, (Vector2){330, (100 + (30 * i))}, 20, 2, BLACK);
-                }
-
+                ListaRanking *i;
+                int cont = 0;
+                for (i = ranking; i != NULL && cont < 10; i = i->next) {
+                    char *str_pontos = strpontos(i->pontos);
+                    DrawTextEx(customFont, i->nome, (Vector2){120, (100 + (30 * cont))}, 20, 2, BLACK);
+                    DrawTextEx(customFont, str_pontos, (Vector2){330, (100 + (30 * cont))}, 20, 2, BLACK);
+                    cont++;
+                }                 
+       
                 break;
             case GET_NAME:
                 DrawTexture(type_page, 0, 0, WHITE); 
