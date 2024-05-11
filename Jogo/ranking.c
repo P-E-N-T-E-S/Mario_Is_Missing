@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "function.h"
 
-int lerranking(int argc, char *argv[]) {
+int lerranking() {
     FILE *dados;
-    dados = fopen(argv[1], "r");
+    dados = fopen("ranking.txt", "r");
 
     int i = 0;
     int qtd = jogadores(dados);
     Ranking *ranking = (Ranking *)malloc(qtd * sizeof(Ranking));
 
-    while (!feof(dados)){
-        fscanf(dados, "%s %d", ranking[i].nome, & ranking[i].pontos);
+    while (!feof(dados) && i < qtd) {
+        fscanf(dados, "%s %d", ranking[i].nome, &ranking[i].pontos);
         i++;
     }
 
     fclose(dados);
     sortranking(ranking, qtd);
-    addRanking(ranking, qtd, dados);
+    addRanking(ranking, qtd);
+
     free(ranking);
 
     return 0;
@@ -41,9 +41,10 @@ void sortranking(Ranking *ranking, int qtd) {
     }
 }
 
-void addRanking(Ranking *ranking, int qtd, FILE * dados) {
+void addRanking(Ranking *ranking, int qtd) {
     FILE *arquivo;
-    arquivo = fopen(dados, "w");
+    arquivo = fopen("ranking.txt", "w");
+
 
     for (int i = 0; i < qtd; i++) {
         fprintf(arquivo, "%s %d\n", ranking[i].nome, ranking[i].pontos);
@@ -61,7 +62,8 @@ int jogadores(FILE *dados) {
             linhas++;
         }
     }
-    fseek(dados, 0, 0);
+    fseek(dados, 0, SEEK_SET);
+    return linhas;
 }
 
 char* strpontos(int pontos) {
