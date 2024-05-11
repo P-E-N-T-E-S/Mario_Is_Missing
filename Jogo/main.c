@@ -4,7 +4,7 @@
 #include <time.h>
 
 int main() {
-    
+
     const char *types[] = {
         "Nesta cidade, você pode encontrar o Ninho de Pássaro, um estádio icônico construído para os Jogos Olímpicos de 2008.",
         "Há um antigo observatório astronômico que remonta ao século XV.",
@@ -16,13 +16,21 @@ int main() {
 
     const int tamanhoArray = 6;
     int array[tamanhoArray];
-
+    int resposta = 0;
     Questions *head = NULL;
     sortearArquivo(&head, array);
     aleatorizarPerguntas(&head);
     for (int i = 0; i < 6; i++) {
         imprimirPrimeiroValor(head);
-        remover(&head);
+        scanf("%d", &resposta);
+        if(resposta == head->resposta){
+            printf("U win!");
+            remover(&head);
+        }
+        else{
+            printf("U lose");
+            break;
+        }
     }
 
     return 0;
