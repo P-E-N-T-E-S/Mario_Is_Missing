@@ -85,4 +85,3 @@ void lerArquivo(const char *nomeArquivo, Questiontree **head){
     }
     fclose(arquivo);
 }
-
