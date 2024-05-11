@@ -30,6 +30,7 @@ void imprimirPrimeiroValor(Questions *head);
 void remover(Questions **head);
 void sortearArquivo(Questions **head, int *array);
 int randomValue();
+void aleatorizarPerguntas(Questions** head);
 
 //thomaz
 int jogadores(FILE *dados);
