@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "function.h"
 
-int lerranking() {
+int ordernar_ranking() {
     FILE *dados;
     dados = fopen("ranking.txt", "r");
 
@@ -45,7 +45,6 @@ void addRanking(Ranking *ranking, int qtd) {
     FILE *arquivo;
     arquivo = fopen("ranking.txt", "w");
 
-
     for (int i = 0; i < qtd; i++) {
         fprintf(arquivo, "%s %d\n", ranking[i].nome, ranking[i].pontos);
     }
@@ -64,4 +63,33 @@ int jogadores(FILE *dados) {
     }
     fseek(dados, 0, SEEK_SET);
     return linhas;
+}
+
+void salvar_ranking(char *get_name, int pontos) {
+    FILE *dados;
+    dados = fopen("ranking.txt", "a");
+
+    if (dados != NULL) {
+        fprintf(dados, "%s %d\n", get_name, pontos); 
+        fclose(dados);
+    }
+}
+
+Ranking* printranking() {
+    FILE *dados;
+    dados = fopen("ranking.txt", "r");
+
+    int i = 0;
+    int qtd = jogadores(dados);
+    Ranking *ranking = (Ranking *)malloc(qtd * sizeof(Ranking));
+
+    while (!feof(dados) && i < qtd) {
+        fscanf(dados, "%s %d", ranking[i].nome, &ranking[i].pontos);
+        i++;
+    }
+
+    fclose(dados);
+    sortranking(ranking, qtd);
+
+    return ranking;
 }
