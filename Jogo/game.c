@@ -94,7 +94,8 @@ int main(void)
     texturasCenarios[CHI] = LoadTexture("src/Background/China/China.png");
 
     // Load end
-    Texture2D end = LoadTexture("src/Telas/end.png");
+    Texture2D win = LoadTexture("src/Telas/end.png");
+    Texture2D over = LoadTexture("src/Telas/GameOver.png");
 
     // Load music
     Music temaMenu = LoadMusicStream("src/Ost/Menu.mp3");
@@ -163,10 +164,11 @@ int main(void)
                 if (qtd < aux) {
                     aux = qtd;
                 }
-
+                
                 for (int i = 0; i < aux; i++) {
-                    printf("%s\n", ranking[i].nome);
-                    DrawTextEx(customFont, ranking[i].nome, (Vector2){60, 90}, 20, 2, BLACK);
+                    char *str_pontos = strpontos(ranking[i].pontos);
+                    DrawTextEx(customFont, ranking[i].nome, (Vector2){120, (100 + (30 * i))}, 20, 2, BLACK);
+                    DrawTextEx(customFont, str_pontos, (Vector2){330, (100 + (30 * i))}, 20, 2, BLACK);
                 }
 
                 break;
@@ -274,14 +276,16 @@ int main(void)
                 }
                 break;
             case GAME_OVER:
-                //DrawTexture(end, 0, 0, WHITE); 
-                //UpdateMusicStream(temaOver);
-                //loopMusic(temaOver);
+                SetWindowState(FLAG_VSYNC_HINT);
+                SetTargetFPS(60);
+                DrawTexture(over, 0, 0, WHITE); 
+                UpdateMusicStream(temaOver);
+                loopMusic(temaOver);
                 break;
             case WIN:
                 SetWindowState(FLAG_VSYNC_HINT);
                 SetTargetFPS(60);
-                DrawTexture(end, 0, 0, WHITE); 
+                DrawTexture(win, 0, 0, WHITE); 
                 UpdateMusicStream(temaWin);
                 loopMusic(temaWin);
                 break;

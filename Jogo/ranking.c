@@ -102,18 +102,3 @@ char* strpontos(int pontos) {
 
     return str_pontos;
 }
-
-char* pontoschar(const char *array, char str_pontos) {
-    int tamanho = strlen(array);
-    char *pontoschar = (char *)malloc((tamanho + 2) * sizeof(char));
-
-    if (pontoschar == NULL) {
-        exit(1);
-    }
-
-    strcpy(pontoschar, array);
-    pontoschar[tamanho] = str_pontos;
-    pontoschar[tamanho + 1] = '\0';
-
-    return pontoschar;
-}
