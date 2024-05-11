@@ -22,7 +22,6 @@ void sortranking(Ranking *ranking, int n);
 void addRanking(Ranking *ranking, int qtd);
 void salvar_ranking(char *get_name, int pontos);
 Ranking* printranking();
-char* pontoschar(const char *array, char str_pontos);
 char* strpontos(int pontos);
 
 #endif
