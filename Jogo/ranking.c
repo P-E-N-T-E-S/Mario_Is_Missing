@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "function.h"
 
-int ordernar_ranking() {
+int lerranking(int argc, char *argv[]) {
     FILE *dados;
-    dados = fopen("ranking.txt", "r");
+    dados = fopen(argv[1], "r");
 
     int i = 0;
     int qtd = jogadores(dados);
     Ranking *ranking = (Ranking *)malloc(qtd * sizeof(Ranking));
 
-    while (!feof(dados) && i < qtd) {
-        fscanf(dados, "%s %d", ranking[i].nome, &ranking[i].pontos);
+    while (!feof(dados)){
+        fscanf(dados, "%s %d", ranking[i].nome, & ranking[i].pontos);
         i++;
     }
 
     fclose(dados);
     sortranking(ranking, qtd);
-    addRanking(ranking, qtd);
-
+    addRanking(ranking, qtd, dados);
     free(ranking);
 
     return 0;
@@ -41,9 +41,9 @@ void sortranking(Ranking *ranking, int qtd) {
     }
 }
 
-void addRanking(Ranking *ranking, int qtd) {
+void addRanking(Ranking *ranking, int qtd, FILE * dados) {
     FILE *arquivo;
-    arquivo = fopen("ranking.txt", "w");
+    arquivo = fopen(dados, "w");
 
     for (int i = 0; i < qtd; i++) {
         fprintf(arquivo, "%s %d\n", ranking[i].nome, ranking[i].pontos);
@@ -61,35 +61,28 @@ int jogadores(FILE *dados) {
             linhas++;
         }
     }
-    fseek(dados, 0, SEEK_SET);
-    return linhas;
+    fseek(dados, 0, 0);
 }
 
-void salvar_ranking(char *get_name, int pontos) {
-    FILE *dados;
-    dados = fopen("ranking.txt", "a");
+char* strpontos(int pontos) {
+    char *str_pontos = (char *)malloc(20 * sizeof(char));
 
-    if (dados != NULL) {
-        fprintf(dados, "%s %d\n", get_name, pontos); 
-        fclose(dados);
-    }
+    snprintf(str_pontos, 20, "%d", pontos);
+
+    return str_pontos;
 }
 
-Ranking* printranking() {
-    FILE *dados;
-    dados = fopen("ranking.txt", "r");
+char* pontoschar(const char *array, char str_pontos) {
+    int tamanho = strlen(array);
+    char *pontoschar = (char *)malloc((tamanho + 2) * sizeof(char));
 
-    int i = 0;
-    int qtd = jogadores(dados);
-    Ranking *ranking = (Ranking *)malloc(qtd * sizeof(Ranking));
-
-    while (!feof(dados) && i < qtd) {
-        fscanf(dados, "%s %d", ranking[i].nome, &ranking[i].pontos);
-        i++;
+    if (pontoschar == NULL) {
+        exit(1);
     }
 
-    fclose(dados);
-    sortranking(ranking, qtd);
+    strcpy(pontoschar, array);
+    pontoschar[tamanho] = str_pontos;
+    pontoschar[tamanho + 1] = '\0';
 
-    return ranking;
+    return pontoschar;
 }
