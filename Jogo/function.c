@@ -10,6 +10,43 @@ int randomValue() {
     return rand() % 4;
 }
 
+void aleatorizarPerguntas(Questions** head) {
+    srand(time(NULL));
+
+    for (int i = 0; i < 5; i++) {
+        int j = i + rand() % (6 - i);
+        if (i != j) {
+            Questions* node_i = *head;
+            Questions* node_j = *head;
+            for (int k = 0; k < i; k++)
+                node_i = node_i->next;
+            for (int k = 0; k < j; k++)
+                node_j = node_j->next;
+
+            char *temp_pergunta = node_i->pergunta;
+            char *temp_a = node_i->a;
+            char *temp_b = node_i->b;
+            char *temp_c = node_i->c;
+            char *temp_d = node_i->d;
+            int temp_resposta = node_i->resposta;
+
+            node_i->pergunta = node_j->pergunta;
+            node_i->a = node_j->a;
+            node_i->b = node_j->b;
+            node_i->c = node_j->c;
+            node_i->d = node_j->d;
+            node_i->resposta = node_j->resposta;
+
+            node_j->pergunta = temp_pergunta;
+            node_j->a = temp_a;
+            node_j->b = temp_b;
+            node_j->c = temp_c;
+            node_j->d = temp_d;
+            node_j->resposta = temp_resposta;
+        }
+    }
+}
+
 void sortearArquivo(Questions **head, int *array) {
     int op = randomValue();
     switch (op) {

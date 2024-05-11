@@ -28,6 +28,7 @@ void lerArquivo(Questions **head, const char *fileName, int *array);
 void imprimirPrimeiroValor(Questions *head);
 void remover(Questions **head);
 void sortearArquivo(Questions **head, int *array);
+void aleatorizarPerguntas(Questions** head);
 
 //thomaz
 int randomValue();
