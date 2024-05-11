@@ -6,15 +6,26 @@ int ordernar_ranking() {
     FILE *dados;
     dados = fopen("ranking.txt", "r");
 
+    if (dados == NULL) {
+        return 1;
+    }
+
     int i = 0;
     ListaRanking *head = NULL;
     ListaRanking *aux = NULL;
-    
-    while (!feof(dados)) {
+    int leituras = 0;
+
+    while (1) {
         ListaRanking *novo_jogador = (ListaRanking *)malloc(sizeof(ListaRanking));
-        if (fscanf(dados, "%s %d", novo_jogador->nome, &novo_jogador->pontos) != 2) {
+        leituras = fscanf(dados, "%s %d", novo_jogador->nome, &novo_jogador->pontos);
+        if (leituras != 2) {
             free(novo_jogador);
-            break;
+            if (leituras == EOF) {
+                break;
+            } else {
+                fclose(dados);
+                return 1;
+            }
         }
         novo_jogador->next = NULL;
 
