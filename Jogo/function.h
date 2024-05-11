@@ -1,20 +1,35 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-const char *dicas[] = {
-    "Nesta cidade, você pode encontrar o Ninho de Pássaro, um estádio icônico construído para os Jogos Olímpicos de 2008.",
-    "Há um antigo observatório astronômico que remonta ao século XV.",
-    "O Palácio de Verão, um enorme complexo de jardins e edifícios históricos, é um dos locais mais bonitos e tranquilos da cidade.",
-    "Beihai Park é um parque imperial antigo com um lago central, pagodes e jardins paisagísticos.",
-    "O Templo do Céu é um complexo religioso onde os imperadores realizavam rituais para garantir boas colheitas e bênçãos divinas.",
-    "Uma das iguarias locais é o Pato de Pequim, um prato de pato assado servido com panquecas, molho hoisin e cebolinha."
-};
+#include <stdio.h>
+#include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
+
+typedef struct Questions {
+    char *pergunta;
+    char *a;
+    char *b;
+    char *c;
+    char *d;
+    int resposta;
+    struct Questions *next;
+} Questions;
 
 typedef struct ranking {
     int pontos;
     char nome[30];
 } Ranking;
 
+//pedro
+void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d, int resposta);
+void acharLinha(const char *fileName, int linhaProcurada, int *array);
+void lerArquivo(Questions **head, const char *fileName, int *array);
+void imprimirPrimeiroValor(Questions *head);
+void remover(Questions **head);
+void sortearArquivo(Questions **head, int *array);
+
+//thomaz
 int randomValue();
 int jogadores(FILE *dados);
 int ordernar_ranking();

@@ -5,83 +5,123 @@
 #include "function.h"
 
 
-int randomValue(){
+int randomValue() {
     srand(time(NULL));
-    int i = rand() % 4;
-    return i;
+    return rand() % 4;
 }
 
-void sortearArquivo(){
+void sortearArquivo(Questions **head, int *array) {
     int op = randomValue();
-    Questiontree *head = NULL;
-    switch (op)
-    {
-    case 1:
-        lerArquivo("Mario_Is_Missing/Jogo/Perguntas/p1.txt", &head);
-        break;
-    
-    case 2:
-        lerArquivo("Mario_Is_Missing/Jogo/Perguntas/p2.txt", &head);
-        break;
-    
-    case 3:
-        lerArquivo("Mario_Is_Missing/Jogo/Perguntas/p3.txt", &head);
-        break;
-    case 4:
-        lerArquivo("Mario_Is_Missing/Jogo/Perguntas/p4.txt", &head);
-        break;
-    default:
-        break;
+    switch (op) {
+        case 0:
+            acharLinha("Perguntas/resposta.txt", 1, array);
+            lerArquivo(head, "Perguntas/p1.txt", array);
+            break;
+        case 1:
+            acharLinha("Perguntas/resposta.txt", 2, array);
+            lerArquivo(head, "Perguntas/p2.txt", array);
+            break;
+        case 2:
+            acharLinha("Perguntas/resposta.txt", 3, array);
+            lerArquivo(head, "Perguntas/p3.txt", array);
+            break;
+        case 3:
+            acharLinha("Perguntas/resposta.txt", 4, array);
+            lerArquivo(head, "Perguntas/p4.txt", array);
+            break;
+        default:
+            break;
     }
 }
 
 
-void inserir(Questiontree **head, int id, char *pergunta, char *a, char *b, char *c, char *d, char resposta){
-    Questiontree *novo = (Questiontree *)malloc(sizeof(Questiontree));
-    if(novo != NULL){
-        novo->id = id;
-        strcpy(novo->perguntas, pergunta);
-        strcpy(novo->a, a);
-        strcpy(novo->b, b);
-        strcpy(novo->c, c);
-        strcpy(novo->d, d);
-        novo->resposta = resposta;
-        novo->next = *head;
-        *head = novo;
-    }
-}
-
-void lerArquivo(const char *nomeArquivo, Questiontree **head){
-    FILE *arquivo = fopen(nomeArquivo, "r");
-    if(arquivo == NULL){
-        printf("Erro ao abrir o arquivo");
+void acharLinha(const char *fileName, int linhaProcurada, int *array) {
+    FILE *arquivo = fopen(fileName, "r");
+    if (arquivo == NULL) {
+        printf("ERRO: arquivo não encontrado");
         return;
     }
     char linha[256];
-    while(fgets(linha, sizeof(linha), arquivo)){
-
-        if(linha[0] == '\n'){
-            continue;
+    int linhaAtual = 1;
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        if (linhaAtual == linhaProcurada) {
+            char *partes = strtok(linha, " ");
+            int indice = 0;
+            while (partes != NULL && indice < 6) {
+                array[indice] = atoi(partes);
+                partes = strtok(NULL, " ");
+                indice++;
+            }
+            break;
         }
-
-        if (linha[strlen(linha) - 1] == '\n'){
-            linha[strlen(linha) - 1] = '\0';
-        }
-        if (linha[0] >= '0' && linha[0] <= '9') {
-            int id;
-            char pergunta[256], a[256], b[256], c[256], d[256], resposta;
-
-            sscanf(linha, "%d", &id);
-            fgets(pergunta, sizeof(pergunta), arquivo);
-            fgets(a, sizeof(a), arquivo);
-            fgets(b, sizeof(b), arquivo);
-            fgets(c, sizeof(c), arquivo);
-            fgets(d, sizeof(d), arquivo);
-            fgets(linha, sizeof(linha), arquivo);
-            sscanf(linha, "%c", &resposta);
-
-            inserir(&(*head), id, pergunta, a, b, c, d, resposta);
-        }
+        linhaAtual++;
     }
     fclose(arquivo);
+    if (linhaAtual < linhaProcurada) {
+        for (int i = 0; i < 6; i++) {
+            array[i] = -1;
+        }
+    }
+}
+
+
+void lerArquivo(Questions **head, const char *fileName, int *array) {
+    FILE *arquivo = fopen(fileName, "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo");
+        return;
+    }
+    int i = 0;
+    while (!feof(arquivo)) {
+        char pergunta[256], a[256], b[256], c[256], d[256];
+        fgets(pergunta, sizeof(pergunta), arquivo);
+        fgets(a, sizeof(a), arquivo);
+        fgets(b, sizeof(b), arquivo);
+        fgets(c, sizeof(c), arquivo);
+        fgets(d, sizeof(d), arquivo);
+        inserir(head, pergunta, a, b, c, d, array[i]);
+        i++;
+    }
+    fclose(arquivo);
+}
+
+void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d, int resposta) {
+    Questions *novo = (Questions *)malloc(sizeof(Questions));
+    if (novo != NULL) {
+        novo->pergunta = strdup(pergunta);
+        novo->a = strdup(a);
+        novo->b = strdup(b);
+        novo->c = strdup(c);
+        novo->d = strdup(d);
+        novo->resposta = resposta;
+        novo->next = NULL;
+
+        if (*head == NULL) {
+            *head = novo;
+        } else {
+            Questions *aux = *head;
+            while (aux->next != NULL) {
+                aux = aux->next;
+            }
+            aux->next = novo;
+        }
+    }
+}
+
+void remover(Questions **head) {
+    Questions *temp;
+    if (*head != NULL) {
+        temp = *head;
+        *head = (*head)->next;
+        free(temp);
+    }
+}
+
+void imprimirPrimeiroValor(Questions *head) {
+    printf("%s\n", head->pergunta);
+    printf("%s\n", head->a);
+    printf("%s\n", head->b);
+    printf("%s\n", head->c);
+    printf("%s\n", head->d);
+    printf("%d\n", head->resposta);
 }
