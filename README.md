@@ -35,14 +35,14 @@
 
 ## 👀 Visão Geral
 
-Este repositório contém o código-fonte de um jogo educativo inspirado no clássico "Mario Is Missing" do Super Nintendo. A versão aqui apresentada é implementada em linguagem C, utilizando o conceito de árvores para criar um ambiente de aprendizado interativo.
+Este repositório contém o código-fonte de um jogo educativo inspirado no clássico "Mario Is Missing" do Super Nintendo. A versão aqui apresentada é implementada em C, utilizando o conceito de lista encadeada para criar um ambiente de aprendizado interativo.
 
-O projeto foi desenvolvido como parte de um trabalho acadêmico e **não tem fins lucrativos**. Seu objetivo principal é fornecer uma plataforma divertida para que estudantes possam praticar conceitos de árvores, como estrutura de dados, algoritmos de busca, e outros temas relacionados. Através de desafios e puzzles temáticos, os jogadores poderão explorar e aprender enquanto se divertem.
+O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins lucrativos. Seu objetivo principal é fornecer uma plataforma divertida para que estudantes possam praticar conceitos de listas encadeadas, como estrutura de dados, algoritmos de busca e outros temas relacionados. Através de desafios e puzzles temáticos, os jogadores poderão explorar e aprender enquanto se divertem.
 
 ## ⚡️ Funcionalidades Principais
 
 - **Ambiente Gráfico Interativo:** O jogo possui uma interface gráfica simples e intuitiva, facilitando a interação dos jogadores.
-- **Implementação de Árvores em C:** Utiliza-se a linguagem C para criar e manipular estruturas de árvore, ensinando os conceitos fundamentais dessa estrutura de dados.
+- **Implementação de Lista Encadeada em C:** Utiliza-se a linguagem C para criar e manipular estruturas de lista encadeada, ensinando os conceitos fundamentais dessa estrutura de dados.
 - **Desafios Educacionais:** Cada fase do jogo apresenta desafios educativos relacionados a árvores, como inserção, remoção, busca e outras operações.
 - **Feedback Instantâneo:** Os jogadores recebem feedback instantâneo sobre suas ações, ajudando-os a compreender melhor os conceitos abordados.
 - **Progressão de Dificuldade:** As fases são progressivamente desafiadoras, incentivando os jogadores a aprimorar suas habilidades ao longo do jogo.
