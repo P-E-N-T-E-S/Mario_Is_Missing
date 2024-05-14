@@ -345,7 +345,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
         if (position.x >= 310) {
             if (!pgtaAtiva) {
                 DrawTexture(aperte, 20, 30, WHITE);
-                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 30}, 15, 2, BLACK);
+                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){22, 40}, 15, 2, BLACK);
             }
             
             if (IsKeyDown(KEY_E)) {
