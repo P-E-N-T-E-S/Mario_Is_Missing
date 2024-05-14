@@ -43,7 +43,6 @@ void aleatorizarPerguntas(Questions** head);
 int ordernar_ranking();
 void sortranking(ListaRanking *ranking);
 void addRanking(ListaRanking *ranking);
-void salvar_ranking(char *get_name, int pontos);
 ListaRanking *printranking();
 char *strpontos(int pontos);
 void free_ranking(ListaRanking *head);

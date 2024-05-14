@@ -78,16 +78,6 @@ void free_ranking(ListaRanking *head) {
   }
 }
 
-void salvar_ranking(char *get_name, int pontos) {
-  FILE *dados;
-  dados = fopen("ranking.txt", "a");
-
-  if (dados != NULL) {
-    fprintf(dados, "%s %d\n", get_name, pontos);
-    fclose(dados);
-  }
-}
-
 ListaRanking *printranking() {
   FILE *dados;
   dados = fopen("ranking.txt", "r");
