@@ -157,7 +157,6 @@ int main(void)
                         }
                         break;
                 }
-
                 break;
             case RANKING_PAGE:
                 DrawTexture(ranking_page, 0, 0, WHITE);
