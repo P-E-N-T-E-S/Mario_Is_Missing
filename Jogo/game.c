@@ -191,10 +191,7 @@ int main(void)
                     cenarios++;
                     break;
                 }
-
-                printf("\n\nCORRETA %d\n\n", head->resposta);
-                printf("RESPOSTA DO USUARIO %d\n\n", resposta_usuario);
-
+                
                 if ((resposta_usuario == head->resposta) && cenarios < NUM) { 
                     currentScreen = DICA;
                 }
