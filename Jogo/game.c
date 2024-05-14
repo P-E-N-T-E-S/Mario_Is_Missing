@@ -4,6 +4,7 @@
 #include "raylib.h"
 #include "function.c"
 #include "ranking.c"
+#include "dica.c"
 
 #define WIDTH 510
 #define HEIGHT 446
@@ -114,6 +115,9 @@ int main(void)
     sortearArquivo(&head, respostas);
     aleatorizarPerguntas(&head);
 
+    Dicas *headDicas = NULL;
+    lerDicas(&headDicas);
+    Dicas *tempDicas = headDicas;
 
     while (!WindowShouldClose())
     {
@@ -184,11 +188,13 @@ int main(void)
                         pontos -= 20;
                     }
                     resposta_usuario = animacaoLuigi(texturasCenarios[cenarios], customFont, head);
-                    remover(&head);
                     cenarios++;
                     break;
                 }
-                printf("%d", head->resposta);
+
+                printf("\n\nCORRETA %d\n\n", head->resposta);
+                printf("RESPOSTA DO USUARIO %d\n\n", resposta_usuario);
+
                 if ((resposta_usuario == head->resposta) && cenarios < NUM) { 
                     currentScreen = DICA;
                 }
@@ -199,6 +205,7 @@ int main(void)
                     currentScreen = GAME_OVER;
                 }
                 
+                remover(&head);
                 break;
             case DICA:
                 static SimouNao chutar;
@@ -206,17 +213,9 @@ int main(void)
                 DrawTexture(dica, 0, 0, WHITE); 
 
                 if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
-                    if (chutar == NAO) {
-                        chutar = SIM;
-                    } else {
-                        chutar = NAO;
-                    }
+                    chutar = NAO;
                 } else if (IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)) {
-                    if (chutar == SIM) {
-                        chutar = NAO;
-                    } else {
-                        chutar = SIM;
-                    }
+                    chutar = SIM;
                 }    
                 
                 switch (chutar) {
@@ -237,7 +236,8 @@ int main(void)
                 }
                 
                 DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
-                DrawTextEx(customFont, "O Templo do Ceu e um complexo\nreligioso onde os imperadores\nrealizavam rituais para garantir\nboas colheitas e bencaos divinas.", (Vector2){55, 45}, 12, 2, BLACK);
+                DrawText32Chars(customFont, tempDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
+                tempDicas->next;
                 DrawTextEx(customFont, "deseja advinhar onde o mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
 
@@ -327,6 +327,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
     Texture2D alt_b = LoadTexture("src/Telas/escolha_b.png");
     Texture2D alt_c = LoadTexture("src/Telas/escolha_c.png");
     Texture2D alt_d = LoadTexture("src/Telas/escolha_d.png");
+    Texture2D aperte = LoadTexture("src/Telas/aperteE.png");
 
     Vector2 position = { WIDTH - luigiLeft1.width - 470, HEIGHT - luigiLeft1.height - 40};
     SetTargetFPS(15); 
@@ -346,7 +347,8 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
             
         if (position.x >= 310) {
             if (!pgtaAtiva) {
-                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 30}, 15, 2, RED);
+                DrawTexture(aperte, 20, 30, WHITE);
+                DrawTextEx(font, "Aperte E para falar com a Peach", (Vector2){20, 30}, 15, 2, BLACK);
             }
             
             if (IsKeyDown(KEY_E)) {
@@ -408,7 +410,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
         }
         
         if (!pgtaAtiva) {
-            if (IsKeyDown(KEY_A)) {
+            if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
                 position.x -= speed;
                 
                 if (currentFrame == 0) {
@@ -424,7 +426,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
                 }
 
                 last = 1;
-            } else if (IsKeyDown(KEY_D)) {
+            } else if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
                 position.x += speed;
                 
                 if (currentFrame == 0) {

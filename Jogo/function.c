@@ -153,12 +153,3 @@ void remover(Questions **head) {
         free(temp);
     }
 }
-
-void imprimirPrimeiroValor(Questions *head) {
-    printf("%s\n", head->pergunta);
-    printf("%s\n", head->a);
-    printf("%s\n", head->b);
-    printf("%s\n", head->c);
-    printf("%s\n", head->d);
-    printf("%d\n", head->resposta);
-}

@@ -24,18 +24,22 @@ typedef struct lista_ranking {
     struct lista_ranking *next;
 } ListaRanking;
 
+//Dica.c
+typedef struct Dicas {
+    char *dica;
+    struct Dicas *next;
+} Dicas;
+
 //Function.c
 void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d, int resposta);
 void acharLinha(const char *fileName, int linhaProcurada, int *array);
 void lerArquivo(Questions **head, const char *fileName, int *array);
-void imprimirPrimeiroValor(Questions *head);
 void remover(Questions **head);
 void sortearArquivo(Questions **head, int *array);
 int randomValue();
 void aleatorizarPerguntas(Questions** head);
 
 //Ranking.c
-int jogadores(FILE *dados);
 int ordernar_ranking();
 void sortranking(ListaRanking *ranking);
 void addRanking(ListaRanking *ranking);
@@ -43,5 +47,10 @@ void salvar_ranking(char *get_name, int pontos);
 ListaRanking *printranking();
 char *strpontos(int pontos);
 void free_ranking(ListaRanking *head);
+
+//Dica.c
+void append(Dicas **head, const char *dica);
+void lerDicas(Dicas **head);
+void freeDicaList(Dicas *head);
 
 #endif
