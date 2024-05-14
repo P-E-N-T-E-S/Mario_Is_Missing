@@ -59,6 +59,9 @@ int main(void)
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
     SetTargetFPS(60);
     SetWindowState(FLAG_VSYNC_HINT);
+    SetExitKey(KEY_NULL);
+    DisableCursor();
+    HideCursor();
     InitAudioDevice();
     SetMasterVolume(0.7);
     
@@ -102,6 +105,9 @@ int main(void)
     Music temaMenu = LoadMusicStream("src/Ost/Menu.mp3");
     Music temaWin = LoadMusicStream("src/Ost/FinalBom.mp3");
     Music temaOver = LoadMusicStream("src/Ost/FinalRuim.mp3");
+    Sound acertou = LoadSound("src/Ost/LuigiYAHOO.wav");
+    Sound itsmeMario = LoadSound("src/Ost/itsmeMario.wav");
+
     PlayMusicStream(temaMenu);
     PlayMusicStream(temaWin);
     PlayMusicStream(temaOver);
@@ -121,12 +127,12 @@ int main(void)
 
     while (!WindowShouldClose())
     {
+        UpdateMusicStream(temaMenu);
+        loopMusic(temaMenu);
         BeginDrawing();
         switch (currentScreen) {
             case MENU:
                 static MenuOpcoes opcao;
-                UpdateMusicStream(temaMenu);
-                loopMusic(temaMenu);
                 DrawTexture(menu, 0, 0, WHITE); 
    
                 if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
@@ -167,7 +173,10 @@ int main(void)
                     DrawTextEx(customFont, str_pontos, (Vector2){330, (100 + (30 * cont))}, 20, 2, BLACK);
                     cont++;
                 }                 
-       
+
+                if (IsKeyDown(KEY_ESCAPE)) {
+                    currentScreen = MENU;
+                }
                 break;
             case GET_NAME:
                 DrawTexture(type_page, 0, 0, WHITE); 
@@ -177,6 +186,7 @@ int main(void)
                 printf("%d", charCountName);
                 if (IsKeyPressed(KEY_ENTER) && get_name[0] != '\0'){ 
                     currentScreen = GAME;
+                    PauseMusicStream(temaMenu);
                     break;
                 }
                 break;
@@ -191,9 +201,10 @@ int main(void)
                     cenarios++;
                     break;
                 }
-                
+
                 if ((resposta_usuario == head->resposta) && cenarios < NUM) { 
                     currentScreen = DICA;
+                    PlaySound(acertou);
                 }
                 else if (cenarios == NUM) {
                     currentScreen = GUESS;
@@ -206,7 +217,9 @@ int main(void)
                 break;
             case DICA:
                 static SimouNao chutar;
-
+                SetWindowMonitor(FLAG_VSYNC_HINT);
+                SetTargetFPS(60);
+                ResumeMusicStream(temaMenu);
                 DrawTexture(dica, 0, 0, WHITE); 
 
                 if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
@@ -235,7 +248,7 @@ int main(void)
                 DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
                 DrawText32Chars(customFont, tempDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
                 tempDicas->next;
-                DrawTextEx(customFont, "deseja advinhar onde o mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
+                DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
 
                 break;
@@ -246,7 +259,7 @@ int main(void)
                 
                 TextInput(get_guess, &charCountGuess);
                 
-                DrawTextEx(customFont, "em que cidade o mario\nesta:", (Vector2){60, 90}, 16, 2, WHITE);
+                DrawTextEx(customFont, "em que cidade o Mario\nesta:", (Vector2){60, 90}, 16, 2, WHITE);
                 DrawTextEx(customFont, get_guess, (Vector2){60, 140}, 20, 2, WHITE);
                 
                 if (IsKeyPressed(KEY_ENTER) && get_guess[0] != '\0'){ 
@@ -268,22 +281,35 @@ int main(void)
             case GAME_OVER:
                 SetWindowState(FLAG_VSYNC_HINT);
                 SetTargetFPS(60);
+                StopMusicStream(temaMenu);
                 DrawTexture(over, 0, 0, WHITE); 
                 UpdateMusicStream(temaOver);
                 loopMusic(temaOver);
+                DrawTextEx(customFont, "aperte esc para voltar pro menu", (Vector2){36, 380}, 14, 2, WHITE);
+                if (IsKeyDown(KEY_ESCAPE)) {
+                    currentScreen = MENU;
+                }
                 break;
             case WIN:
                 SetWindowState(FLAG_VSYNC_HINT);
                 SetTargetFPS(60);
+                StopMusicStream(temaMenu);
                 DrawTexture(win, 0, 0, WHITE); 
+                DrawTextEx(customFont, strpontos(pontos), (Vector2){260, 330}, 14, 2, BLACK);
                 UpdateMusicStream(temaWin);
                 loopMusic(temaWin);
+                DrawTextEx(customFont, "aperte esc para voltar pro menu", (Vector2){36, 380}, 14, 2, BLACK);
+                if (IsKeyDown(KEY_ESCAPE)) {
+                    currentScreen = MENU;
+                }
+
                 break;
                 
         }
         EndDrawing();
 
     }
+    UnloadTexture(over);
 
     CloseWindow();
     CloseAudioDevice();
