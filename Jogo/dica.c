@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "function.h"
 
 void append(Dicas **head, const char *dica) {
     Dicas *novo = (Dicas *)malloc(sizeof(Dicas));
@@ -32,6 +33,15 @@ void lerDicas(Dicas **head) {
 
     fclose(file);
 
+}
+
+void removerDicas(Dicas **head) {
+    Dicas *temp;
+    if (*head != NULL) {
+        temp = *head;
+        *head = (*head)->next;
+        free(temp);
+    }
 }
 
 void freeDicaList(Dicas *head) {

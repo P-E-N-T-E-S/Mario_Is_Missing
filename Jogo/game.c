@@ -123,7 +123,6 @@ int main(void)
 
     Dicas *headDicas = NULL;
     lerDicas(&headDicas);
-    Dicas *tempDicas = headDicas;
 
     while (!WindowShouldClose())
     {
@@ -232,6 +231,7 @@ int main(void)
                         DrawTexture(sim, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
                             currentScreen = GUESS;
+                            removerDicas(&headDicas);
                             break;
                         }
                         break;
@@ -239,17 +239,16 @@ int main(void)
                         DrawTexture(nao, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
                             currentScreen = GAME;
+                            removerDicas(&headDicas);
                             break;
                         }
                         break;
                 }
                 
                 DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
-                DrawText32Chars(customFont, tempDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
-                tempDicas->next;
+                DrawText32Chars(customFont, headDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
                 DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
-
                 break;
             case GUESS:
                 char local[7] = "PEQUIM";
@@ -284,9 +283,9 @@ int main(void)
                 DrawTexture(over, 0, 0, WHITE); 
                 UpdateMusicStream(temaOver);
                 loopMusic(temaOver);
-                DrawTextEx(customFont, "aperte esc para voltar pro menu", (Vector2){36, 380}, 14, 2, WHITE);
+                DrawTextEx(customFont, "aperte esc para sair", (Vector2){120, 380}, 14, 2, WHITE);
                 if (IsKeyDown(KEY_ESCAPE)) {
-                    currentScreen = MENU;
+                    CloseWindow();
                 }
                 break;
             case WIN:
@@ -297,9 +296,9 @@ int main(void)
                 DrawTextEx(customFont, strpontos(pontos), (Vector2){260, 330}, 14, 2, BLACK);
                 UpdateMusicStream(temaWin);
                 loopMusic(temaWin);
-                DrawTextEx(customFont, "aperte esc para voltar pro menu", (Vector2){36, 380}, 14, 2, BLACK);
+                DrawTextEx(customFont, "aperte esc para sair", (Vector2){120, 380}, 14, 2, BLACK);
                 if (IsKeyDown(KEY_ESCAPE)) {
-                    currentScreen = MENU;
+                    CloseWindow();
                 }
 
                 break;

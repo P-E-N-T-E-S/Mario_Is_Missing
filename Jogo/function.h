@@ -51,6 +51,7 @@ void salvar_ranking(char *get_name, int pontos);
 //Dica.c
 void append(Dicas **head, const char *dica);
 void lerDicas(Dicas **head);
+void removerDicas(Dicas **head);
 void freeDicaList(Dicas *head);
 
 #endif
