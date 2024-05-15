@@ -47,6 +47,29 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins 
 - **Feedback Instantâneo:** Os jogadores recebem feedback instantâneo sobre suas ações, ajudando-os a compreender melhor os conceitos abordados.
 - **Progressão de Dificuldade:** As fases são progressivamente desafiadoras, incentivando os jogadores a aprimorar suas habilidades ao longo do jogo.
 
+## 👑 Instalação RAYLIB:
+
+    1. GCC:
+    sudo apt install build-essential git
+    
+    2. Required Libs:
+    sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+    
+    3. Raylib:
+    git clone https://github.com/raysan5/raylib.git raylib
+    
+    cd raylib/src
+    make PLATFORM=PLATFORM_DESKTOP
+    sudo make install
+    
+    rodar:
+    1. criar um build.bash e botar:
+    cc game.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+    
+    no terminal: 
+    bash build.bash
+    ./a.out
+
 ## ♟️ Executando o Jogo
 
 1. Clone o repositório para o seu ambiente local.
