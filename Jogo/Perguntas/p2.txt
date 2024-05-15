@@ -14,10 +14,10 @@ b) Zonas Climaticas
 c) Coordenadas Geograficas
 d) Latitude
 Qual dessas opcoes tem um pais que NAO faz parte da regiao Central da America Central?
-a) Honduras, Guatemala, El Salvador
-b) Panamá, Costa Rica, Nicarágua
-c) México, Belize, Cuba
-d) Guatemala, Honduras, El Salvador
+a) Honduras, Guatemala
+b) Panamá, Costa Rica
+c) México, Belize
+d) Guatemala, Honduras
 Quem foi Aristoteles?
 a) O irmao do Aoi Todo
 b) O invertor do Aviao
