@@ -54,6 +54,9 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins 
 3. Execute o jogo e siga as instruções na tela para começar a jogar.
 4. Explore os desafios educativos e divirta-se aprendendo sobre árvores!
 
+## 📼 Vídeo do jogo
+[![Video no YouTube](https://img.youtube.com/vi/PN-0ms1rm6o/0.jpg)](https://youtu.be/PN-0ms1rm6o)
+
 ## 👨‍👩‍👧‍👦 Contribuintes
   
 <a href="https://github.com/P-E-N-T-E-S/Mario_Is_Missing/graphs/contributors">
