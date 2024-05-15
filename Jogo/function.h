@@ -46,6 +46,7 @@ void addRanking(ListaRanking *ranking);
 ListaRanking *printranking();
 char *strpontos(int pontos);
 void free_ranking(ListaRanking *head);
+void salvar_ranking(char *get_name, int pontos);
 
 //Dica.c
 void append(Dicas **head, const char *dica);

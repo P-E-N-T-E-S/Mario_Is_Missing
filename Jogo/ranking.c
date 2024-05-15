@@ -38,6 +38,16 @@ int ordernar_ranking() {
   return 0;
 }
 
+void salvar_ranking(char *get_name, int pontos) {
+  FILE *dados;
+  dados = fopen("ranking.txt", "a");
+
+  if (dados != NULL) {
+    fprintf(dados, "%s %d\n", get_name, pontos);
+    fclose(dados);
+  }
+}
+
 void sortranking(ListaRanking *ranking) {
   ListaRanking *i, *j;
   ListaRanking temp;

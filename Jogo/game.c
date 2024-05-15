@@ -127,9 +127,9 @@ int main(void)
 
     while (!WindowShouldClose())
     {
+        BeginDrawing();
         UpdateMusicStream(temaMenu);
         loopMusic(temaMenu);
-        BeginDrawing();
         switch (currentScreen) {
             case MENU:
                 static MenuOpcoes opcao;
