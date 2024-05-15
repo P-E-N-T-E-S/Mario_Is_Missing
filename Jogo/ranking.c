@@ -5,7 +5,7 @@
 
 int ordernar_ranking() {
   FILE *dados;
-  dados = fopen("ranking.txt", "r");
+  dados = fopen("Perguntas/ranking.txt", "r");
 
   int i = 0;
   ListaRanking *head = NULL;
@@ -38,6 +38,16 @@ int ordernar_ranking() {
   return 0;
 }
 
+void salvar_ranking(char *get_name, int pontos) {
+  FILE *dados;
+  dados = fopen("Perguntas/ranking.txt", "a");
+
+  if (dados != NULL) {
+    fprintf(dados, "%s %d\n", get_name, pontos);
+    fclose(dados);
+  }
+}
+
 void sortranking(ListaRanking *ranking) {
   ListaRanking *i, *j;
   ListaRanking temp;
@@ -58,7 +68,7 @@ void sortranking(ListaRanking *ranking) {
 
 void addRanking(ListaRanking *head) {
   FILE *arquivo;
-  arquivo = fopen("ranking.txt", "w");
+  arquivo = fopen("Perguntas/ranking.txt", "w");
 
   ListaRanking *aux = head;
   while (aux != NULL) {
@@ -78,19 +88,9 @@ void free_ranking(ListaRanking *head) {
   }
 }
 
-void salvar_ranking(char *get_name, int pontos) {
-  FILE *dados;
-  dados = fopen("ranking.txt", "a");
-
-  if (dados != NULL) {
-    fprintf(dados, "%s %d\n", get_name, pontos);
-    fclose(dados);
-  }
-}
-
 ListaRanking *printranking() {
   FILE *dados;
-  dados = fopen("ranking.txt", "r");
+  dados = fopen("Perguntas/ranking.txt", "r");
 
   ListaRanking *head = NULL;
   ListaRanking *aux = NULL;
