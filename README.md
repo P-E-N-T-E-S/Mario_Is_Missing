@@ -49,6 +49,13 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins 
 
 ## 👑 Instalação RAYLIB:
 
+    Execute todos esses comandos em um terminal Ubuntu.
+    
+    Crie um diretório:
+    mkdir mariodir
+    cd mariodir
+    
+    ---- INSTALAÇÃO DA RAYLIB ----
     1. GCC:
     sudo apt install build-essential git
     
@@ -61,14 +68,24 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins 
     cd raylib/src
     make PLATFORM=PLATFORM_DESKTOP
     sudo make install
+    -----------------------------
     
-    rodar:
-    1. criar um build.bash e botar:
-    cc game.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+    Saia do diretório da Raylib:
+    cd ../..
     
-    no terminal: 
+    Clone nosso repositório:
+    git clone https://github.com/P-E-N-T-E-S/Mario_Is_Missing
+    
+    Entre na pasta jogo:
+    cd Mario_Is_Missing/Jogo
+    
+    Compile o programa:
     bash build.bash
-    ./a.out
+    
+    Execute o programa:
+    ./game.exe
+    
+    E se divirta :)
 
 ## ♟️ Executando o Jogo
 
