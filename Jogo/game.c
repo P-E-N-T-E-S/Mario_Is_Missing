@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <time.h>
 #include "raylib.h"
 #include "function.c"
 #include "ranking.c"
@@ -220,13 +219,7 @@ int main(void)
                 SetTargetFPS(60);
                 ResumeMusicStream(temaMenu);
                 DrawTexture(dica, 0, 0, WHITE); 
-                
-                DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
-                DrawText32Chars(customFont, headDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
-                DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
-                DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
-                sleep(1);
-                
+
                 if (IsKeyPressed(KEY_S) || IsKeyDown(KEY_DOWN)) {
                     chutar = NAO;
                 } else if (IsKeyPressed(KEY_W) || IsKeyDown(KEY_UP)) {
@@ -251,7 +244,11 @@ int main(void)
                         }
                         break;
                 }
-
+                DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
+                DrawText32Chars(customFont, headDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
+                DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
+                DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
+             
                 break;
             case GUESS:
                 char local[7] = "PEQUIM";
