@@ -48,7 +48,7 @@ void aleatorizarPerguntas(Questions** head) {
     }
 }
 
-// Função básica para remover um head da lista encadeada
+// Função que define qual arquivo de pergunta vamos usar, criando afim de deixar o jogo mais dinamico
 void sortearArquivo(Questions **head, int *array) {
     int op = randomValue();
     switch (op) {
