@@ -56,6 +56,7 @@ void DrawText32Chars(Font font, const char *text, Vector2 position, float fontSi
 
 int main(void)
 {
+    // Configurações de tela
     InitWindow(WIDTH, HEIGHT, "Mario Is Missing");
     SetTargetFPS(60);
     SetWindowState(FLAG_VSYNC_HINT);
@@ -76,7 +77,7 @@ int main(void)
     // Load Font
     Font customFont = LoadFont("src/MarioFont.ttf");
 
-    // Nome e dica
+    // Inicializar string do nome e do local
     char get_name[MAX_INPUT_CHARS + 1] = {0};
     int charCountName = 0;
     char get_guess[10] = {0};
@@ -101,26 +102,28 @@ int main(void)
     Texture2D win = LoadTexture("src/Telas/end.png");
     Texture2D over = LoadTexture("src/Telas/GameOver.png");
 
-    // Load music
+    // Load music and play music
     Music temaMenu = LoadMusicStream("src/Ost/Menu.mp3");
     Music temaWin = LoadMusicStream("src/Ost/FinalBom.mp3");
     Music temaOver = LoadMusicStream("src/Ost/FinalRuim.mp3");
     Sound acertou = LoadSound("src/Ost/LuigiYAHOO.wav");
     Sound itsmeMario = LoadSound("src/Ost/itsmeMario.wav");
-
     PlayMusicStream(temaMenu);
     PlayMusicStream(temaWin);
     PlayMusicStream(temaOver);
 
+    // Inicializar tela no menu e variáveis zeradas
     ScreenState currentScreen = MENU;
     int cenarios = 0;
     int pontos = 120;
 
+    // Inicializar head das perguntas e lista encadeada
     Questions *head = NULL;
     int respostas[6];
     sortearArquivo(&head, respostas);
     aleatorizarPerguntas(&head);
 
+    // Inicializar head das dicas e lista encadeada
     Dicas *headDicas = NULL;
     lerDicas(&headDicas);
 
@@ -129,6 +132,7 @@ int main(void)
         BeginDrawing();
         UpdateMusicStream(temaMenu);
         loopMusic(temaMenu);
+        // Percorre as telas através da variável currentScreen
         switch (currentScreen) {
             case MENU:
                 static MenuOpcoes opcao;
@@ -139,19 +143,19 @@ int main(void)
                 } else if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
                     opcao = START;
                 }  
-
+    
                 switch (opcao) {
-                    case START:
+                    case START: 
                         DrawTexture(start, 165, 260, WHITE); 
-                        if (IsKeyDown(KEY_ENTER)) { 
-                            currentScreen = GET_NAME;
+                        if (IsKeyDown(KEY_ENTER)) {  
+                            currentScreen = GET_NAME; // Pede o nome do usuário
                             break;
                         }
                         break;
-                    case RANKING:
+                    case RANKING: 
                         DrawTexture(ranking, 165, 260, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) { 
-                            currentScreen = RANKING_PAGE;
+                            currentScreen = RANKING_PAGE; // Mostra o ranking
                             break;
                         }
                         break;
@@ -160,12 +164,13 @@ int main(void)
             case RANKING_PAGE:
                 DrawTexture(ranking_page, 0, 0, WHITE);
                 ListaRanking *headRank = NULL;
-                ordernar_ranking();
-                ListaRanking *ranking = printranking();
+                ordernar_ranking(); // Ordena a lista encadeada 
+                ListaRanking *ranking = printranking(); // Chama a lista encadeada
 
+                // Percorre a lista encadeada do ranking e mostrando as 10 pontuações mais altas
                 ListaRanking *i;
                 int cont = 0;
-                for (i = ranking; i != NULL && cont < 10; i = i->next) {
+                for (i = ranking; i != NULL && cont < 10; i = i->next) { 
                     char *str_pontos = strpontos(i->pontos);
                     DrawTextEx(customFont, i->nome, (Vector2){120, (100 + (30 * cont))}, 20, 2, BLACK);
                     DrawTextEx(customFont, str_pontos, (Vector2){330, (100 + (30 * cont))}, 20, 2, BLACK);
@@ -173,17 +178,17 @@ int main(void)
                 }                 
 
                 if (IsKeyDown(KEY_ESCAPE)) {
-                    currentScreen = MENU;
+                    currentScreen = MENU; // Volta pro menu
                 }
                 break;
             case GET_NAME:
                 DrawTexture(type_page, 0, 0, WHITE); 
-                TextInput(get_name, &charCountName);
+                TextInput(get_name, &charCountName); // Guarda nome na variável get_name
                 DrawTextEx(customFont, "Digite seu nome:", (Vector2){60, 90}, 20, 2, WHITE);
-                DrawTextEx(customFont, get_name, (Vector2){60, 140}, 20, 2, WHITE);
-                printf("%d", charCountName);
+                DrawTextEx(customFont, get_name, (Vector2){60, 140}, 20, 2, WHITE); // Mostra o nome da tela
+       
                 if (IsKeyPressed(KEY_ENTER) && get_name[0] != '\0'){ 
-                    currentScreen = GAME;
+                    currentScreen = GAME; // Inicializa jogo
                     PauseMusicStream(temaMenu);
                     break;
                 }
@@ -191,27 +196,28 @@ int main(void)
             case GAME:
                 Alternativas resposta_usuario;
 
-                while (cenarios < NUM) {
+                while (cenarios < NUM) { // Percorre os cenários
                     if (cenarios > 0) {
-                        pontos -= 20;
+                        pontos -= 20; // A cada cenário percorrido perde 20 pontos
                     }
+                    // Recebe a resposta do usuário com a função animação Luigi
                     resposta_usuario = animacaoLuigi(texturasCenarios[cenarios], customFont, head);
                     cenarios++;
                     break;
                 }
 
-                if ((resposta_usuario == head->resposta) && cenarios < NUM) { 
-                    currentScreen = DICA;
+                if ((resposta_usuario == head->resposta) && cenarios < NUM) {  // Se resposta tiver correta
+                    currentScreen = DICA; // Recebe a dica
                     PlaySound(acertou);
                 }
                 else if (cenarios == NUM) {
-                    currentScreen = GUESS;
+                    currentScreen = GUESS; // Se perguntas tiverem acabado, usuário advinha local
                 }
                 else {
-                    currentScreen = GAME_OVER;
+                    currentScreen = GAME_OVER; // Caso responda errado, perde o jogo.
                 }
                 
-                remover(&head);
+                remover(&head); // Remove a head de perguntas
                 break;
             case DICA:
                 static SimouNao chutar;
@@ -227,56 +233,54 @@ int main(void)
                 }    
                 
                 switch (chutar) {
-                    case SIM:
+                    case SIM: // Caso queira advinhar, vai para página para digitar
                         DrawTexture(sim, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
                             currentScreen = GUESS;
-                            removerDicas(&headDicas);
+                            removerDicas(&headDicas); // Remove head de dicas
                             break;
                         }
                         break;
-                    case NAO:
+                    case NAO: // Caso não queira, volta pro jogo
                         DrawTexture(nao, 50, 20, WHITE); 
                         if (IsKeyDown(KEY_ENTER)) {
                             currentScreen = GAME;
-                            removerDicas(&headDicas);
+                            removerDicas(&headDicas); // Remove head de dicas
                             break;
                         }
                         break;
                 }
                 DrawTextEx(customFont, "DICA:", (Vector2){55, 25}, 14, 2, BLACK);
                 DrawText32Chars(customFont, headDicas->dica, (Vector2){55, 45}, 12, 2, BLACK);
-                DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK);
+                DrawTextEx(customFont, "deseja advinhar onde o Mario esta?", (Vector2){55, 135}, 11, 2, BLACK); // Acessando a dica
                 DrawTextEx(customFont, "  sim\n  nao", (Vector2){55, 155}, 14, 2, BLACK);
              
                 break;
             case GUESS:
-                char local[7] = "PEQUIM";
+                char local[7] = "PEQUIM"; // Local definido
 
                 DrawTexture(type_page, 0, 0, WHITE); 
                 
-                TextInput(get_guess, &charCountGuess);
-                
+                TextInput(get_guess, &charCountGuess); // Input do local advinhado
                 DrawTextEx(customFont, "em que cidade o Mario\nesta:", (Vector2){60, 90}, 16, 2, WHITE);
                 DrawTextEx(customFont, get_guess, (Vector2){60, 140}, 20, 2, WHITE);
                 
                 if (IsKeyPressed(KEY_ENTER) && get_guess[0] != '\0'){ 
-                    
-                    if (strcmp(get_guess, local) == 0) {
-                        salvar_ranking(get_name, pontos);
-                        currentScreen = WIN;
+                    if (strcmp(get_guess, local) == 0) { // Caso local definido == input do usuário
+                        salvar_ranking(get_name, pontos); // Salva a pontuação
+                        currentScreen = WIN; // Ganha o jogo
                     }
-                    else if (strcmp(get_guess, local) != 0 && cenarios == (NUM - 1)) {
-                        currentScreen = GAME_OVER;
+                    else if (strcmp(get_guess, local) != 0 && cenarios == (NUM - 1)) { // Caso local definido != input
+                        currentScreen = GAME_OVER; // Perde o jogo
                     }
                     else {
-                        currentScreen = GAME;
+                        currentScreen = GAME; 
                     }
-                    memset(get_guess, '\0', sizeof(get_guess));
+                    memset(get_guess, '\0', sizeof(get_guess)); // Limpar o input
                     break;
                 }
                 break;
-            case GAME_OVER:
+            case GAME_OVER: // Tela game over
                 SetWindowState(FLAG_VSYNC_HINT);
                 SetTargetFPS(60);
                 StopMusicStream(temaMenu);
@@ -285,10 +289,10 @@ int main(void)
                 loopMusic(temaOver);
                 DrawTextEx(customFont, "aperte esc para sair", (Vector2){120, 380}, 14, 2, WHITE);
                 if (IsKeyDown(KEY_ESCAPE)) {
-                    CloseWindow();
+                    CloseWindow(); 
                 }
                 break;
-            case WIN:
+            case WIN: // Tela de vitória
                 SetWindowState(FLAG_VSYNC_HINT);
                 SetTargetFPS(60);
                 StopMusicStream(temaMenu);
@@ -315,7 +319,7 @@ int main(void)
 }
 
 
-void TextInput(char *inputText, int *charCount) {
+void TextInput(char *inputText, int *charCount) { // Recebe uma string do usuário
     int key = GetKeyPressed();
     if (key != 0)
     {
@@ -359,7 +363,6 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
     bool pgtaAtiva = false; 
     Alternativas alt = A;
     
-
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -391,7 +394,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
                     }
                 }
 
-                switch (alt) {
+                switch (alt) { // Retorna a alternativa escolhida pelo usuário
                     case A:
                         DrawTexture(alt_a, 50, 20, WHITE);
                         if (IsKeyDown(KEY_ENTER)) {
@@ -422,6 +425,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
                         break;
                 }
         
+                // Printa pergunta e alternativas
                 DrawText32Chars(font, head->pergunta, (Vector2){55, 35}, 12, 2, BLACK);
                 DrawTextEx(font, head->a, (Vector2){80, 122}, 12, 2, BLACK);
                 DrawTextEx(font, head->b, (Vector2){80, 138}, 12, 2, BLACK);
@@ -432,7 +436,7 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
         
         if (!pgtaAtiva) {
             if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-                position.x -= speed;
+                position.x -= speed; // Animação do Luigi andando para esquerda e direita
                 
                 if (currentFrame == 0) {
                     DrawTexture(luigiLeft1, position.x, position.y, WHITE);
@@ -488,16 +492,17 @@ Alternativas animacaoLuigi(Texture2D bg, Font font, Questions *head) {
     UnloadTexture(luigiRight2);
 }
 
-bool isMusicOver(Music musica) { 
+bool isMusicOver(Music musica) { // Verifica se música acabou
     if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) >= 1) return true;
     if((GetMusicTimePlayed(musica)/GetMusicTimeLength(musica)) <= 0) return true;
     else return false;
 }
 
-void loopMusic(Music musica) { 
+void loopMusic(Music musica) { // Se música acabar, bota ela em um loop
     if(isMusicOver(musica)) UpdateMusicStream(musica);
 }
 
+// Printar até 32 caracteres para caber na tela
 void DrawText32Chars(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color color) {
     int y = 0;
     int index = 0;
