@@ -3,6 +3,7 @@
 #include <string.h>
 #include "function.h"
 
+//inserir dicas em uma lista encadeada
 void append(Dicas **head, const char *dica) {
     Dicas *novo = (Dicas *)malloc(sizeof(Dicas));
     novo->dica = strdup(dica);
@@ -18,6 +19,7 @@ void append(Dicas **head, const char *dica) {
     temp->next = novo;
 }
 
+//ler o arquivo de dicas
 void lerDicas(Dicas **head) {
     FILE *file = fopen("Perguntas/dicas.txt", "r");
     if (file == NULL) {
@@ -35,6 +37,7 @@ void lerDicas(Dicas **head) {
 
 }
 
+//remover a head da lista
 void removerDicas(Dicas **head) {
     Dicas *temp;
     if (*head != NULL) {
@@ -44,6 +47,7 @@ void removerDicas(Dicas **head) {
     }
 }
 
+//liberar a lista de dicas
 void freeDicaList(Dicas *head) {
     Dicas *temp;
     while (head != NULL) {
