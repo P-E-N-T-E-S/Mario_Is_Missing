@@ -4,12 +4,13 @@
 #include <time.h>
 #include "function.h"
 
-
+// Função responsável por gerar o valor aleatório da escolha do arquivo
 int randomValue() {
     srand(time(NULL));
     return rand() % 4;
 }
 
+// Serve para randomizar a ordem em que as perguntas aparecerão
 void aleatorizarPerguntas(Questions** head) {
     srand(time(NULL));
 
@@ -47,6 +48,7 @@ void aleatorizarPerguntas(Questions** head) {
     }
 }
 
+// Função básica para remover um head da lista encadeada
 void sortearArquivo(Questions **head, int *array) {
     int op = randomValue();
     switch (op) {
@@ -71,7 +73,7 @@ void sortearArquivo(Questions **head, int *array) {
     }
 }
 
-
+// Função utilizada para pegar uma linha específica do arquivo “resposta” e transcrever em um array 
 void acharLinha(const char *fileName, int linhaProcurada, int *array) {
     FILE *arquivo = fopen(fileName, "r");
     if (arquivo == NULL) {
@@ -101,7 +103,7 @@ void acharLinha(const char *fileName, int linhaProcurada, int *array) {
     }
 }
 
-
+// Essa função lê linha por linha do arquivo sorteado atribuindo cada linha a um atributo da struct
 void lerArquivo(Questions **head, const char *fileName, int *array) {
     FILE *arquivo = fopen(fileName, "r");
     if (arquivo == NULL) {
@@ -122,6 +124,7 @@ void lerArquivo(Questions **head, const char *fileName, int *array) {
     fclose(arquivo);
 }
 
+// Função básica de inserção de nós em uma lista encadeada
 void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *d, int resposta) {
     Questions *novo = (Questions *)malloc(sizeof(Questions));
     if (novo != NULL) {
@@ -145,6 +148,7 @@ void inserir(Questions **head, char *pergunta, char *a, char *b, char *c, char *
     }
 }
 
+// Função básica para remover uma head da lista encadeada
 void remover(Questions **head) {
     Questions *temp;
     if (*head != NULL) {
