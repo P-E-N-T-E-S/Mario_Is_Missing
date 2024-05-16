@@ -95,7 +95,7 @@ O projeto foi desenvolvido como parte de um trabalho acadêmico e não tem fins 
 4. Explore os desafios educativos e divirta-se aprendendo sobre árvores!
 
 ## 📼 Vídeo do jogo
-[![Video no YouTube](https://img.youtube.com/vi/PN-0ms1rm6o/0.jpg)](https://youtu.be/PN-0ms1rm6o)
+https://github.com/P-E-N-T-E-S/Mario_Is_Missing/assets/126795323/8f0cab33-4f9c-4821-9901-7ff2cd01dc80
 
 ## 👨‍👩‍👧‍👦 Contribuintes
   
